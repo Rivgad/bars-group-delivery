@@ -1,4 +1,4 @@
-import { Col, Container, Image, Row, Stack } from "react-bootstrap";
+import { Col, Container, Row, Stack } from "react-bootstrap";
 
 const CheckoutPage = () => {
     return (
