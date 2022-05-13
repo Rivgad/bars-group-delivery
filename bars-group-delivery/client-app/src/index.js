@@ -1,18 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button } from 'react-bootstrap';
+import App from './components/app';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import MainPage from './components/main-page';
+import CheckoutPage from './components/pages/checkout-page/checkout-page';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
     <>
-    <h1>
-      сервис доставки еды
-    </h1>
-    <Button variant='primary'>Кнопка</Button>
-    <button className='btn btn-primary' type='button'></button>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<App />} >
+            <Route index element={<MainPage />} />
+            <Route path='checkout' element={<CheckoutPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </>
   </React.StrictMode>
 );
