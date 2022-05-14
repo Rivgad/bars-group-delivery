@@ -1,25 +1,27 @@
 import { Badge, Button, Card, Stack } from "react-bootstrap";
+import {useSelector} from 'react-redux';
+import { selectProductById } from "./productsSlice";
 
-const ProductCard = (props) => {
-    const { data, onButtonClick, ...other } = props;
+const ProductCard = ({id, onButtonClick}) => {
+    const product = useSelector((state)=> selectProductById(state, id));
+
     return (
         <>
             <Card
-                style={{ 'minHeight': '416px' }}
-                {...other}
+                style={{ 'minHeight': '440px' }}
             >
-                <Card.Img style={{ 'height': '272px' }} variant="top" src={data?.image} />
+                <Card.Img style={{ 'height': '272px' }} variant="top" src={product.image} />
 
                 <Card.Body style={{ 'position': 'relative' }}>
                     <Card.Title>
                         {
-                            data?.title == null ? 'Название' : data.title
+                            product.title
                         }
                     </Card.Title>
 
                     <Stack direction='horizontal' gap={1} className='flex-wrap'>
                         {
-                            data?.description?.map((item, idx) => <Badge key={idx} pill>{item}</Badge>)
+                            product.description?.map((item, idx) => <Badge key={idx} pill>{item}</Badge>)
                         }
                     </Stack>
                 </Card.Body>
@@ -27,12 +29,12 @@ const ProductCard = (props) => {
                     <div className='d-flex justify-content-between align-items-center'>
                         <div >
                             {
-                                data?.price == null ?
+                                product?.price == null ?
                                     'Цена ' :
-                                    data.price
+                                    product.price
                             } ₽</div>
                         <div >
-                            <Button onClick={() => onButtonClick(data)}>В корзину</Button>
+                            <Button onClick={() => onButtonClick(product)}>В корзину</Button>
                         </div>
                     </div>
                 </Card.Footer>

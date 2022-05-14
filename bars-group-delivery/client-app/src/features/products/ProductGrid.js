@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { useSelector } from 'react-redux'
 import { Col, Container, Row } from "react-bootstrap";
-import ProductCard from "../product-card";
-import ProductModalPanel from "../product-modal-panel/product-modal-panel";
 
-const ProductList = ({ data, addItem }) => {
+import ProductModalPanel from './ProductModalPanel'
+import ProductCard from "./ProductCard";
+import { selectProductIds } from "./productsSlice";
+
+const ProductGrid = () => {
     const [modalShow, setModalShow] = useState(false);
     const [productData, setProductData] = useState({});
     const [count, setCount] = useState(1);
@@ -17,30 +20,35 @@ const ProductList = ({ data, addItem }) => {
         })
     }
     const openModalPanel = (data) => {
-        setCount(1);
         setProductData(data);
         setModalShow(true);
     }
-    const hideModalPanel = ()=>{
+    const hideModalPanel = () => {
         setModalShow(false);
+        setCount(1);
     }
+
+    const productIds = useSelector(selectProductIds);
+    
+    const renderedProductCards = productIds.map((id) => (
+        <Col key={id}>
+            <ProductCard id={id} onButtonClick={(data) => openModalPanel(data)} />
+        </Col>
+    ))
+    
     return (
         <>
             <Container >
                 <Row xs={2} md={2} lg={3} className="g-4">
-                    {data.map((item, idx) => (
-                        <Col key={item.id}>
-                            <ProductCard data={item} onButtonClick={(data) => openModalPanel(data)} />
-                        </Col>
-                    ))}
+                    {renderedProductCards}
                 </Row>
             </Container>
             <ProductModalPanel
+                id={productData.id}
                 incCount={IncCount}
                 decCount={DecCount}
                 count={count}
-                onAddButtonClick={addItem}
-                data={productData}
+                onAddButtonClick={null}
                 show={modalShow}
                 onHide={hideModalPanel}
             />
@@ -48,4 +56,4 @@ const ProductList = ({ data, addItem }) => {
     );
 }
 
-export default ProductList;
+export default ProductGrid;

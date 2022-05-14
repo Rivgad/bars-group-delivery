@@ -5,10 +5,15 @@ import {
 } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 import { Basket3 } from 'react-bootstrap-icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { isOpenChanged } from '../basket/basketSlice';
 
-const AppHeader = (props) => {
-    const {onCartButtonClick, totalPrice } = props;
-    
+const Header = () => {
+    const dispatch = useDispatch();
+    const totalPrice = useSelector(state => state.basket.totalPrice);
+
+    const onCartButtonClick = () => dispatch(isOpenChanged(true));
+
     return (
         <>
             <Navbar className='position-sticky' fixed='top' bg='light' expand="lg">
@@ -27,18 +32,17 @@ const AppHeader = (props) => {
                                 Личный кабинет
                             </Nav.Link>
                         </Nav.Item>
-                        <Nav.Item style={{'minWidth':125}}>
+                        <Nav.Item style={{ 'minWidth': 140 }}>
                             <Nav.Link onClick={onCartButtonClick} className='  d-flex justify-content-center align-items-center'>
                                 <Basket3 width={20} height={20} className='me-2'>
-                                    
+
                                 </Basket3>
                                 {
-                                    totalPrice != null ?
-                                    `${totalPrice} ₽`
-                                    :
-                                    <span>Корзина</span>
+                                    totalPrice == null || totalPrice <= 0 ?
+                                        <span>Корзина</span>
+                                        :
+                                        `${totalPrice} ₽`
                                 }
-                                
                             </Nav.Link>
                         </Nav.Item>
 
@@ -49,4 +53,4 @@ const AppHeader = (props) => {
     )
 }
 
-export default AppHeader;
+export default Header;

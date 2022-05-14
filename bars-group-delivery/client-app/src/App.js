@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
-import AppHeader from "../app-header";
+import Header from "./features/header/Header";
 
 const App = () =>{
     return(
         <>
-            <AppHeader totalPrice = {200}/>
+            <Header totalPrice = {200}/>
             <Outlet/>
         </>
     )

@@ -1,24 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import App from './components/app';
+import { Provider } from 'react-redux'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import MainPage from './components/main-page';
-import CheckoutPage from './components/pages/checkout-page/checkout-page';
+
+import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import store from './store';
+import { fetchProducts } from './features/products/productsSlice';
+
+import App from './App';
+import CheckoutPage from './features/checkout/CheckoutPage';
+import MenuPage from './features/products/MenuPage';
+import ProfilePage from './features/profile/ProfilePage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
+store.dispatch(fetchProducts());
+
 root.render(
   <React.StrictMode>
-    <>
+    <Provider store={store}>
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<App />} >
-            <Route index element={<MainPage />} />
+            <Route index element={<MenuPage />} />
             <Route path='checkout' element={<CheckoutPage />} />
+            <Route path='profile' element={<ProfilePage />} />
           </Route>
         </Routes>
       </BrowserRouter>
-    </>
+    </Provider>
   </React.StrictMode>
 );
