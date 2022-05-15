@@ -11,7 +11,7 @@ const ProfilePage = () => {
         return <Navigate to="/login" />;
     }
     console.log(currentUser);
-    const { phone, name,addresses } = currentUser;
+    const { phone, name, addresses } = currentUser;
 
     return (
         <Container className='pt-4 pb-5'>

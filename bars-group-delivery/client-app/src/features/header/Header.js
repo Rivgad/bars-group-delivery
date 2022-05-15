@@ -31,7 +31,8 @@ const Header = () => {
                             {
                                 currentUser ?
                                     <NavDropdown title="Личный кабинет" id="basic-nav-dropdown" align='end'>
-                                        <NavDropdown.Item onClick={() => navigate('/profile')}>Профиль</NavDropdown.Item>
+                                        <NavDropdown.Item onClick={() => navigate('/profile')}>Мой профиль</NavDropdown.Item>
+                                        <NavDropdown.Item onClick={() => navigate('/orders')}>Мои заказы</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item onClick={() => dispatch(logout())}>Выйти</NavDropdown.Item>
                                     </NavDropdown>

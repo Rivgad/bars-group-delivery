@@ -3,7 +3,6 @@ import axios from "axios";
 const register = (username, email, password) => {
   return axios.post("signup", {
     username,
-    email,
     password,
   });
 };

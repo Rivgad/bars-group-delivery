@@ -1,21 +1,20 @@
-import { Button, Container } from "react-bootstrap";
+import {  Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { login } from "../auth/authSlice";
+import LoginForm from "./LoginForm";
 
-const LoginPage = ()=>{
+const LoginPage = () => {
     const dispatch = useDispatch();
-    const {isLoggedIn}= useSelector(state=>state.auth);
+    const { isLoggedIn } = useSelector(state => state.auth);
 
-    if(isLoggedIn){
-        return <Navigate to='/profile'/>
+    if (isLoggedIn) {
+        return <Navigate to='/' />
     }
-    return(
+    return (
         <>
             <Container className='pt-5'>
-                <Button onClick={()=>dispatch(login({phone:'79393374139', password:'123'}))}>
-                    Login
-                </Button>
+                <LoginForm onSubmit={({ phone, password }) => dispatch(login({ phone, password }))} />
             </Container>
         </>
     )

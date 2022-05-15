@@ -1,27 +1,22 @@
-import { object, string } from 'yup';
-import { Formik } from 'formik';
-import NumberFormat from 'react-number-format';
-import { Button, Col, Form, Row } from 'react-bootstrap';
-import phoneSchema from '../common/phoneShema';
-
-
-const nameRegExp = /([\D{L}]$)/g;
+import { Formik } from "formik";
+import { Button, Col, Form, Row } from "react-bootstrap";
+import NumberFormat from "react-number-format";
+import { object, string } from "yup";
+import phoneSchema from "../common/phoneShema";
 
 const schema = object({
-    name: string()
-        .required('Введите имя')
-        .matches(nameRegExp, 'Неверный формат имени (только буквы)'),
-    phone: phoneSchema
-});
-
-const ProfileForm = ({name, phone, onSubmit}) => {
+    phone: phoneSchema,
+    password: string()
+        .required('Введите пароль')
+})
+const LoginForm = ({ onSubmit }) => {
     return (
         <Formik
             validationSchema={schema}
             onSubmit={onSubmit}
             initialValues={{
-                name: name,
-                phone: phone,
+                phone: '',
+                password: ''
             }}
         >
             {({
@@ -32,21 +27,6 @@ const ProfileForm = ({name, phone, onSubmit}) => {
                 errors,
             }) => (
                 <Form noValidate onSubmit={handleSubmit}>
-                    <Row className="mb-3">
-                        <Form.Group as={Col} controlId="validationFormikName">
-                            <Form.Label>Имя</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="name"
-                                value={values.name}
-                                onChange={handleChange}
-                                isInvalid={!!errors.name}
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                {errors.name}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                    </Row>
                     <Row className="mb-3">
                         <Form.Group as={Col} controlId="validationFormikPhone">
                             <Form.Label>Номер телефона</Form.Label>
@@ -65,12 +45,28 @@ const ProfileForm = ({name, phone, onSubmit}) => {
                             </Form.Control.Feedback>
                         </Form.Group>
                     </Row>
+                    <Row className="mb-3">
+                        <Form.Group as={Col} controlId="validationFormikName">
+                            <Form.Label>Пароль</Form.Label>
+                            <Form.Control
+                                type='password'
+                                name="password"
+                                value={values.password}
+                                onChange={handleChange}
+                                isInvalid={!!errors.password}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.password}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                    </Row>
 
-                    <Button type="submit" className=' w-100' size='lg'>Сохранить</Button>
+                    <Button type="submit" className=' w-100' size='lg'>Войти</Button>
                 </Form>
             )}
+
         </Formik>
-    )
+    );
 }
 
-export default ProfileForm;
+export default LoginForm;
