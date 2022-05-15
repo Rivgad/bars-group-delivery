@@ -2,17 +2,17 @@ import {
     Container,
     Navbar,
     Nav,
+    NavDropdown,
 } from 'react-bootstrap'
-import { Link } from 'react-router-dom';
-import { Basket3 } from 'react-bootstrap-icons';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { isOpenChanged } from '../basket/basketSlice';
+import { logout } from '../auth/authSlice';
+import BasketOffcanvasButton from '../basket/BasketOffcanvasButton';
 
 const Header = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
-    const totalPrice = useSelector(state => state.basket.totalPrice);
-
-    const onCartButtonClick = () => dispatch(isOpenChanged(true));
+    const { user: currentUser } = useSelector((state) => state.auth);
 
     return (
         <>
@@ -27,25 +27,23 @@ const Header = () => {
                         <Nav.Link>Меню</Nav.Link>
                     </Nav>
                     <Nav className='justify-content-end me-3'>
-                        <Nav.Item>
-                            <Nav.Link >
-                                Личный кабинет
-                            </Nav.Link>
+                        <Nav.Item className='me-1'>
+                            {
+                                currentUser ?
+                                    <NavDropdown title="Личный кабинет" id="basic-nav-dropdown" align='end'>
+                                        <NavDropdown.Item onClick={() => navigate('/profile')}>Профиль</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item onClick={() => dispatch(logout())}>Выйти</NavDropdown.Item>
+                                    </NavDropdown>
+                                    :
+                                    <NavLink to='login' className=' nav-link'>
+                                        Войти
+                                    </NavLink>
+                            }
                         </Nav.Item>
                         <Nav.Item style={{ 'minWidth': 140 }}>
-                            <Nav.Link onClick={onCartButtonClick} className='  d-flex justify-content-center align-items-center'>
-                                <Basket3 width={20} height={20} className='me-2'>
-
-                                </Basket3>
-                                {
-                                    totalPrice == null || totalPrice <= 0 ?
-                                        <span>Корзина</span>
-                                        :
-                                        `${totalPrice} ₽`
-                                }
-                            </Nav.Link>
+                            <BasketOffcanvasButton/>
                         </Nav.Item>
-
                     </Nav>
                 </Container>
             </Navbar>

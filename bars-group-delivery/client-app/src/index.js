@@ -13,6 +13,7 @@ import App from './App';
 import CheckoutPage from './features/checkout/CheckoutPage';
 import MenuPage from './features/products/MenuPage';
 import ProfilePage from './features/profile/ProfilePage';
+import LoginPage from './features/login/LoginPage'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -27,6 +28,7 @@ root.render(
             <Route index element={<MenuPage />} />
             <Route path='checkout' element={<CheckoutPage />} />
             <Route path='profile' element={<ProfilePage />} />
+            <Route path='login' element={<LoginPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -1,4 +1,4 @@
-import { Button, Col, Container, FloatingLabel, Form, Row, Stack } from "react-bootstrap";
+import { Button, Col, Container, FloatingLabel, Form, Row} from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import Basket from "../basket/Basket";
