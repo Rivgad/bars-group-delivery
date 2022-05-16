@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace bars_group_delivery.EntityFramework.Models
@@ -32,7 +33,11 @@ namespace bars_group_delivery.EntityFramework.Models
         [JsonPropertyName("ingredients")]
         public ICollection<Ingredient>? Ingredients { get; set; }
 
+        [Required]
+        [JsonPropertyName("categoryId")]
+        public int CategoryId { get; set; }
+
         [JsonIgnore]
-        public IEnumerable<Category>? Categories { get; set; } = Enumerable.Empty<Category>();
+        public Category? Category { get; set; }
     }
 }
