@@ -65,11 +65,13 @@ builder.Services.AddAuthentication(
 builder.Services.AddScoped<IAuthenticationService>(services =>
 {
     return new AuthenticationService(
+        applicationContext: services.GetRequiredService<ApplicationContext>(),
         userManager: services.GetRequiredService<UserManager<Account>>(),
         issuer: configuration["JWT:ValidIssuer"],
         audience: configuration["JWT:ValidAudience"],
         securityKey: configuration["JWT:Secret"]);
 });
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 var app = builder.Build();
 

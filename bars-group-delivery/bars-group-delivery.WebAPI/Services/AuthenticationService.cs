@@ -1,8 +1,10 @@
-﻿using bars_group_delivery.EntityFramework.Models;
+﻿using bars_group_delivery.EntityFramework;
+using bars_group_delivery.EntityFramework.Models;
 using bars_group_delivery.WebAPI.Contracts;
 using bars_group_delivery.WebAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
@@ -11,17 +13,19 @@ namespace bars_group_delivery.WebAPI.Services
 {
     public class AuthenticationService : IAuthenticationService
     {
+        private readonly ApplicationContext _applicationContext;
         private readonly UserManager<Account> _userManager;
         private readonly string _issuer;
         private readonly string _audience;
         private readonly string _securityKey;
 
-        public AuthenticationService(UserManager<Account> userManager, string issuer, string audience, string securityKey)
+        public AuthenticationService(UserManager<Account> userManager, string issuer, string audience, string securityKey, ApplicationContext applicationContext)
         {
             _userManager = userManager;
             _issuer = issuer;
             _audience = audience;
             _securityKey = securityKey;
+            _applicationContext = applicationContext;
         }
         public async Task<string> GetPhoneCodeAsync(Account account,string phone)
         {
@@ -82,6 +86,27 @@ namespace bars_group_delivery.WebAPI.Services
                     result = addToRoleResult;
             }
             return result;
+        }
+
+        public async Task<Account?> GetAccountById(string id)
+        {
+            var account = await _applicationContext.Accounts
+                .Include(item => item.Addresses)
+                .FirstOrDefaultAsync(item => item.Id == id);
+
+            return account;
+        }
+
+        public async Task UpdateAccount(Account account)
+        {
+            try
+            {
+                await _userManager.UpdateAsync(account);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
