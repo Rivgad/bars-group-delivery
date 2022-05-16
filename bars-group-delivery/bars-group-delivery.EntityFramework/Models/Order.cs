@@ -26,6 +26,9 @@ namespace bars_group_delivery.EntityFramework.Models
         [JsonPropertyName("price")]
         public decimal? TotalPrice { get; set; }
 
+        [JsonPropertyName("comment")]
+        public string? Comment { get; set; }
+
         [Required]
         [MinLength(1)]
         [JsonPropertyName("products")]
