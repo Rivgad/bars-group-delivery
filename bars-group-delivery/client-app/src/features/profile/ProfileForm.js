@@ -20,7 +20,7 @@ const ProfileForm = ({name, phone, onSubmit}) => {
             validationSchema={schema}
             onSubmit={onSubmit}
             initialValues={{
-                name: name,
+                name: name ?? ' ',
                 phone: phone,
             }}
         >

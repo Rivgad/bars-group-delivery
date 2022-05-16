@@ -1,30 +1,23 @@
 import axios from "axios";
 
-const register = (username, email, password) => {
-  return axios.post("signup", {
-    username,
-    password,
-  });
-};
-const login = (username, password) => {
+const auth = (phone, password) => {
   return axios
-    .post("signin", {
-      username,
-      password,
-    })
-    .then((response) => {
-      if (response.data.accessToken) {
-        localStorage.setItem("token", JSON.stringify(response.data));
+    .post("/api/auth", { phone, password })
+    .then((request) => {
+      if (request.data.accessToken) {
+        localStorage.setItem("user", JSON.stringify(request.data));
       }
-      return response.data;
-    });
-};
+      return request.data;
+    })
+    .catch((error) => { throw Error(error) } )
+  };
+
+
 const logout = () => {
-  localStorage.removeItem("token");
+  localStorage.removeItem("user");
 };
 const authService = {
-  register,
-  login,
+  auth,
   logout,
 };
 

@@ -1,7 +1,7 @@
 import {  Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { login } from "../auth/authSlice";
+import { auth } from "../auth/authSlice";
 import LoginForm from "./LoginForm";
 
 const LoginPage = () => {
@@ -14,7 +14,7 @@ const LoginPage = () => {
     return (
         <>
             <Container className='pt-5'>
-                <LoginForm onSubmit={({ phone, password }) => dispatch(login({ phone, password }))} />
+                <LoginForm onSubmit={({ phone, password }) => dispatch(auth({ phone, password }))} />
             </Container>
         </>
     )
