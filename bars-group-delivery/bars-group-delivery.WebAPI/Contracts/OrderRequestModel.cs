@@ -5,11 +5,22 @@ namespace bars_group_delivery.WebAPI.Contracts
 {
     public class OrderRequestModel
     {
+        public class Product
+        {
+            [JsonPropertyName("id")]
+            public int Id { get; set; }
+
+            [JsonPropertyName("quantity")]
+            public int Quantity { get; set; }
+        }
         [JsonPropertyName("address")]
         public string Address { get; set; }
         
+        [JsonPropertyName("comment")]
+        public string Comment { get; set; }
+
         [JsonPropertyName("products")]
-        public IEnumerable<OrderProduct> OrderProducts { get; set; }
+        public Product[] Products { get; set; }
     }
     
 }

@@ -26,7 +26,7 @@ namespace bars_group_delivery.WebAPI.Controllers
 
         [Authorize(Roles = "user")]
         [HttpPost("[Action]")]
-        public async Task<IActionResult> CreateOrder([FromBody] OrderRequestModel requestModel)
+        public async Task<IActionResult> CreateOrder([FromBody] OrderRequestModel order)
         {
             string? accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (accountId == null)
@@ -34,7 +34,8 @@ namespace bars_group_delivery.WebAPI.Controllers
 
             try
             {
-                var createdOrder = await _orderService.CreateOrder(accountId, requestModel.Address, requestModel.OrderProducts);
+                var orderProducts = order.Products.Select(item=> new OrderProduct() { ProductId = item.Id, Quantity = item.Quantity });
+                var createdOrder = await _orderService.CreateOrder(accountId, order.Address, orderProducts);
 
                 return CreatedAtAction(
                     nameof(CreateOrder),
@@ -53,11 +54,12 @@ namespace bars_group_delivery.WebAPI.Controllers
 
         [Authorize(Roles = "user")]
         [HttpGet("[Action]")]
-        public async Task<IActionResult> GetTotalPrice(OrderProduct[] orderProducts)
+        public async Task<IActionResult> GetTotalPrice(OrderRequestModel.Product[] orderProducts)
         {
             try
             {
-                var result = await _orderService.CalculateAndValidateOrderPrice(orderProducts);
+                var _orderProducts = orderProducts.Select(item=> new OrderProduct() { ProductId = item.Id, Quantity = item.Quantity });
+                var result = await _orderService.CalculateAndValidateOrderPrice(_orderProducts);
                 return Ok(new { price = result });
             }
             catch (Exception ex)
