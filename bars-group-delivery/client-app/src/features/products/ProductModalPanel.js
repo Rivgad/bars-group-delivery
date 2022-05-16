@@ -42,6 +42,7 @@ const ProductModalPanel = (props) => {
                     <Row className='mb-3'>
                         <Col >
                             <Image width={384} height={384}
+                                style={{ 'objectFit': 'cover' }}
                                 src={product.photo ? `data:image/png;base64,${product.photo}` : `${process.env.PUBLIC_URL}/dish-icon.svg`}
                                 alt='Изображение'
                             />

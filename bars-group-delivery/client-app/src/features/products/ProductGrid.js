@@ -39,7 +39,7 @@ const ProductGrid = () => {
     return (
         <>
             <Container >
-                <Row xs={2} md={2} lg={3} className="g-4">
+                <Row xs={1} md={2} lg={3} className="g-4">
                     {renderedProductCards}
                 </Row>
             </Container>

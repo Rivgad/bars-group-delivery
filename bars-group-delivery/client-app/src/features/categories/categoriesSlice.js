@@ -31,23 +31,22 @@ const initialState = {
 const categoriesSlice = createSlice({
     name: 'categories',
     initialState: initialState,
-    extraReducers: {
-        [fetchCategories.fulfilled]: (state, action) => {
-            const newEntities = {};
-            action.payload.forEach((category) => {
-                newEntities[category.id] = category;
-            });
-            state.entities = newEntities;
-            state.status = Status.Succeeded;
-        },
-        [fetchCategories.rejected]: (state, action) => {
-            state.status = Status.Failed;
-            state.entities = null;
-        },
-        [fetchCategories.pending]: (state, action) => {
-            state.status = Status.Loading;
-            state.entities = null;
-        }
+    extraReducers: builder => {
+        builder
+            .addCase(fetchCategories.pending, (state, action) => {
+                state.status = Status.Loading;
+            })
+            .addCase(fetchCategories.fulfilled, (state, action) => {
+                const newEntities = {};
+                action.payload.forEach((category) => {
+                    newEntities[category.id] = category;
+                });
+                state.entities = newEntities;
+                state.status = Status.Succeeded;
+            })
+            .addCase(fetchCategories.rejected, (state, action) => {
+                state.status = Status.Failed;
+            })
     }
 });
 

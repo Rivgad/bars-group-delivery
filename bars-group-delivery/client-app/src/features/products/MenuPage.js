@@ -15,7 +15,6 @@ const MenuPage = () => {
     return (
         <>
             <Container className='pt-0 pb-5' fluid>
-                <h1>{categoryId}</h1>
                 <Row>
                     <Col className='pt-3'>
                         <ProductGrid />

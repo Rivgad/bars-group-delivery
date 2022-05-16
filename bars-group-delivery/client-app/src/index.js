@@ -14,8 +14,11 @@ import MenuPage from './features/products/MenuPage';
 import ProfilePage from './features/profile/ProfilePage';
 import LoginPage from './features/login/LoginPage'
 import CategoryPage from './features/categories/CategoryPage';
+import { fetchCategories } from './features/categories/categoriesSlice';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+store.dispatch(fetchCategories())
 
 root.render(
   <React.StrictMode>
