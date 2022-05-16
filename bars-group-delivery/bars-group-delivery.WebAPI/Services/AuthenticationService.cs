@@ -1,6 +1,8 @@
 ﻿using bars_group_delivery.EntityFramework.Models;
+using bars_group_delivery.WebAPI.Contracts;
 using bars_group_delivery.WebAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
@@ -10,9 +12,9 @@ namespace bars_group_delivery.WebAPI.Services
     public class AuthenticationService : IAuthenticationService
     {
         private readonly UserManager<Account> _userManager;
-        private string _issuer;
-        private string _audience;
-        private string _securityKey;
+        private readonly string _issuer;
+        private readonly string _audience;
+        private readonly string _securityKey;
 
         public AuthenticationService(UserManager<Account> userManager, string issuer, string audience, string securityKey)
         {
@@ -34,16 +36,14 @@ namespace bars_group_delivery.WebAPI.Services
             return result;
         }
 
-        public async Task<string?> LoginOrRegistration(string phone, string password)
+        public async Task<AuthenticationResult?> Login(string phone, string password)
         {
-            if(phone == "11111111111")
-            {
-                throw new Exception();
-            }
             var identityUsr = await _userManager.FindByNameAsync(phone);
 
             if (await _userManager.CheckPasswordAsync(identityUsr, password))
             {
+                var userRoles = await _userManager.GetRolesAsync(identityUsr);
+
                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_securityKey));
                 var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
                 var token = new JwtSecurityToken(
@@ -53,39 +53,14 @@ namespace bars_group_delivery.WebAPI.Services
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var stringToken = tokenHandler.WriteToken(token);
 
-                return stringToken;
-            }
-            else
-            {
-                var result = await Registration(phone, password);
-                if (result.Succeeded)
-                {
-                    var token = await Login(phone, password);
-                    return token;
-                }
-                else
-                {
-                    throw new Exception(result.ToString());
-                }
-            }
-        }
+                var result = new AuthenticationResult(
+                    accessToken: stringToken,
+                    phone: identityUsr.UserName,
+                    name: identityUsr.Name ?? "",
+                    roles: userRoles.ToArray()
+                    );
 
-        public async Task<string?> Login(string phone, string password)
-        {
-            var identityUsr = await _userManager.FindByNameAsync(phone);
-
-            if (await _userManager.CheckPasswordAsync(identityUsr, password))
-            {
-                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_securityKey));
-                var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-                var token = new JwtSecurityToken(
-                    issuer: _issuer,
-                    audience: _audience,
-                    signingCredentials: credentials);
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var stringToken = tokenHandler.WriteToken(token);
-
-                return stringToken;
+                return result;
             }
             else
             {
@@ -98,7 +73,14 @@ namespace bars_group_delivery.WebAPI.Services
             Account user = new Account { UserName = phone };
 
             var result = await _userManager.CreateAsync(user, password);
-            
+
+            if (result.Succeeded)
+            {
+                var identityUsr = await _userManager.FindByNameAsync(phone);
+                var addToRoleResult = await _userManager.AddToRoleAsync(identityUsr, "user");
+                if (!addToRoleResult.Succeeded)
+                    result = addToRoleResult;
+            }
             return result;
         }
     }

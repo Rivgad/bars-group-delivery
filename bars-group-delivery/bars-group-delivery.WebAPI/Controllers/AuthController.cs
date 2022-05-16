@@ -1,4 +1,5 @@
 ﻿using bars_group_delivery.EntityFramework.Models;
+using bars_group_delivery.WebAPI.Contracts;
 using bars_group_delivery.WebAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -25,58 +26,30 @@ namespace bars_group_delivery.WebAPI.Controllers
         {
             _authenticationService = authenticationService;
         }
-        public static bool IsPhoneNumber(string number)
-        {
-            return Regex.Match(number, @"^([0-9]{11})$").Success;
-        }
 
         [HttpPost]
-        public async Task<IActionResult> Auth(
-            [StringLength(11, MinimumLength = 11), RegularExpression(@"^([0-9]{11})$")] string phone,
-            [MinLength(4)] string password)
+        public async Task<IActionResult> Auth([FromBody] AuthenticationModel authModel)
         {
-            try
+            var loginResult = await _authenticationService.Login(authModel.Phone, authModel.Password);
+            if (loginResult != null)
+                return new JsonResult(loginResult);
+
+            var registrationResult = await _authenticationService.Registration(authModel.Phone, authModel.Password);
+            if (registrationResult.Succeeded)
             {
-                var result = await _authenticationService.LoginOrRegistration(phone, password);
-                if(result == null)
-                {
+                loginResult = await _authenticationService.Login(authModel.Phone, authModel.Password);
+                if (loginResult == null)
                     return StatusCode(500);
-                }
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-        }
 
-        [HttpGet("[Action]")]
-        public async Task<IActionResult> Login([StringLength(11, MinimumLength = 11)] string phone, string password)
-        {
-            var token = await _authenticationService.Login(phone, password);
-            
-            if (token != null)
+                return new JsonResult(loginResult);
+            }
+            else if (registrationResult.Errors.Any(item => item.Code == "DuplicateUserName"))
             {
-                return Ok(token);
+                return StatusCode(403, new { error= "Login Failed, The user name or password provided is incorrect" });
             }
             else
             {
-                return Unauthorized();
-            }
-        }
-
-        [HttpPost("[Action]")]
-        public async Task<IActionResult> Registration([StringLength(11, MinimumLength = 11)]string phone, string password)
-        {
-            var result = await _authenticationService.Registration(phone, password);
-
-            if (result.Succeeded)
-            {
-                return Ok(result);
-            }
-            else
-            {
-                return BadRequest(result);
+                return StatusCode(500, registrationResult.ToString());
             }
         }
 

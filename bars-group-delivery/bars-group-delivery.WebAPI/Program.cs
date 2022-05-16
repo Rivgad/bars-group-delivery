@@ -37,6 +37,7 @@ builder.Services.AddIdentity<Account, IdentityRole>(
     })
     .AddEntityFrameworkStores<ApplicationContext>()
     .AddUserManager<UserManager<Account>>()
+    .AddRoleManager<RoleManager<IdentityRole>>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IConfiguration, ConfigurationManager>();
