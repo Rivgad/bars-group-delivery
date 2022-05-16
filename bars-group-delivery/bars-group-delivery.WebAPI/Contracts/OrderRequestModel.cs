@@ -11,4 +11,5 @@ namespace bars_group_delivery.WebAPI.Contracts
         [JsonPropertyName("products")]
         public IEnumerable<OrderProduct> OrderProducts { get; set; }
     }
+    
 }

@@ -1,5 +1,6 @@
 ﻿using bars_group_delivery.EntityFramework;
 using bars_group_delivery.EntityFramework.Models;
+using bars_group_delivery.WebAPI.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,20 +32,20 @@ namespace bars_group_delivery.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody] Product product)
+        public async Task<IActionResult> CreateProduct(ProductCreateRequestModel productModel)
         {
             Product newProduct = new Product()
             {
-                Title = product.Title,
-                Photo = product.Photo,
-                Kcal = product.Kcal,
-                Price = product.Price,
-                Proteins = product.Proteins,
-                Fats = product.Fats,
-                Carbs = product.Carbs,
-                Categories = product.Categories,
-                Ingredients = product.Ingredients?.Select(item=> new Ingredient() { Title=item.Title }).ToList(),
-                Weight = product.Weight,
+                CategoryId = productModel.CategoryId,
+                Title = productModel.Title,
+                Photo = productModel.Photo,
+                Kcal = productModel.Kcal,
+                Price = productModel.Price,
+                Proteins = productModel.Proteins,
+                Fats = productModel.Fats,
+                Carbs = productModel.Carbs,
+                Weight = productModel.Weight,
+                Ingredients = productModel.IngredientModels?.Select(item => new Ingredient() { Title = item }).ToList()
             };
 
             try
@@ -52,7 +53,7 @@ namespace bars_group_delivery.WebAPI.Controllers
                 var result = await _applicationContext.Products.AddAsync(newProduct);
                 await _applicationContext.SaveChangesAsync();
 
-                return CreatedAtAction(nameof(CreateProduct), result);
+                return CreatedAtAction(nameof(CreateProduct), new { id = result.Entity.Id, title = result.Entity.Title });
             }
             catch (Exception ex)
             {
