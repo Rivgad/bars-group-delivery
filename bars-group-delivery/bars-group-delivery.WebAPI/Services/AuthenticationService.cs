@@ -33,6 +33,43 @@ namespace bars_group_delivery.WebAPI.Services
 
             return result;
         }
+
+        public async Task<string?> LoginOrRegistration(string phone, string password)
+        {
+            if(phone == "11111111111")
+            {
+                throw new Exception();
+            }
+            var identityUsr = await _userManager.FindByNameAsync(phone);
+
+            if (await _userManager.CheckPasswordAsync(identityUsr, password))
+            {
+                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_securityKey));
+                var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+                var token = new JwtSecurityToken(
+                    issuer: _issuer,
+                    audience: _audience,
+                    signingCredentials: credentials);
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var stringToken = tokenHandler.WriteToken(token);
+
+                return stringToken;
+            }
+            else
+            {
+                var result = await Registration(phone, password);
+                if (result.Succeeded)
+                {
+                    var token = await Login(phone, password);
+                    return token;
+                }
+                else
+                {
+                    throw new Exception(result.ToString());
+                }
+            }
+        }
+
         public async Task<string?> Login(string phone, string password)
         {
             var identityUsr = await _userManager.FindByNameAsync(phone);
@@ -61,7 +98,7 @@ namespace bars_group_delivery.WebAPI.Services
             Account user = new Account { UserName = phone };
 
             var result = await _userManager.CreateAsync(user, password);
-
+            
             return result;
         }
     }
