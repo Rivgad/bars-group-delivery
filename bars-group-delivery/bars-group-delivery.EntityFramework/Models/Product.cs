@@ -5,17 +5,34 @@ namespace bars_group_delivery.EntityFramework.Models
 {
     public class Product : Entity
     {
+        [JsonPropertyName("title")]
         public string Title { get; set; } = string.Empty;
+
+        [JsonPropertyName("price")]
         public decimal Price { get; set; }
+
+        [JsonPropertyName("weight")]
         public float? Weight { get; set; }
+
+        [JsonPropertyName("kcal")]
         public float? Kcal { get; set; }
+
+        [JsonPropertyName("proteins")]
         public float? Proteins { get; set; }
+
+        [JsonPropertyName("carbs")]
         public float? Carbs { get; set; }
+
+        [JsonPropertyName("fats")]
         public float? Fats { get; set; }
+
+        [JsonPropertyName("photo")]
         public byte[]? Photo { get; set; }
 
+        [JsonPropertyName("ingredients")]
+        public ICollection<Ingredient>? Ingredients { get; set; }
+
         [JsonIgnore]
-        public IEnumerable<Category>? Categories { get; set; }
-        public IEnumerable<Ingredient>? Ingredients { get; set; }
+        public IEnumerable<Category>? Categories { get; set; } = Enumerable.Empty<Category>();
     }
 }

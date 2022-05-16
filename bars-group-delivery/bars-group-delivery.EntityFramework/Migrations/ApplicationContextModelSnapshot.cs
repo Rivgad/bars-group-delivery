@@ -112,10 +112,12 @@ namespace bars_group_delivery.EntityFramework.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AccountId")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("AddressId")
-                        .HasColumnType("integer");
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreateDateTime")
                         .HasColumnType("timestamp with time zone");
@@ -126,11 +128,12 @@ namespace bars_group_delivery.EntityFramework.Migrations
                     b.Property<DateTime?>("ResolveDateTime")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<decimal?>("TotalPrice")
+                        .HasColumnType("numeric");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
-
-                    b.HasIndex("AddressId");
 
                     b.ToTable("Orders");
                 });
@@ -442,17 +445,11 @@ namespace bars_group_delivery.EntityFramework.Migrations
                 {
                     b.HasOne("bars_group_delivery.EntityFramework.Models.Account", "Account")
                         .WithMany("Orders")
-                        .HasForeignKey("AccountId");
-
-                    b.HasOne("bars_group_delivery.EntityFramework.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
+                        .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Account");
-
-                    b.Navigation("Address");
                 });
 
             modelBuilder.Entity("bars_group_delivery.EntityFramework.Models.OrderProduct", b =>

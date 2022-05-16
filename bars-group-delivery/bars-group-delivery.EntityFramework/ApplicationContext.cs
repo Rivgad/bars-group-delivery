@@ -22,9 +22,9 @@ namespace bars_group_delivery.EntityFramework
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options):base(options)
         {
-            Database.EnsureCreated();
+            
         }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
             modelBuilder.Entity<OrderProduct>(
                  j =>
