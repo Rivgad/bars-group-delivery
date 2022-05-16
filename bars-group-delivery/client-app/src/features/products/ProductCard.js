@@ -10,7 +10,9 @@ const ProductCard = ({id, onButtonClick}) => {
             <Card
                 style={{ 'minHeight': '440px' }}
             >
-                <Card.Img style={{ 'height': '272px' }} variant="top" src={product.image} />
+                <Card.Img style={{ 'height': '272px','objectFit': 'cover' }} variant="top" 
+                    src={product.photo ? `data:image/png;base64,${product.photo}` : `${process.env.PUBLIC_URL}/dish-icon.svg`}
+                />
 
                 <Card.Body style={{ 'position': 'relative' }}>
                     <Card.Title>
@@ -34,7 +36,9 @@ const ProductCard = ({id, onButtonClick}) => {
                                     product.price
                             } ₽</div>
                         <div >
-                            <Button onClick={() => onButtonClick(product)}>В корзину</Button>
+                            <Button onClick={() => {
+                                onButtonClick(product)
+                            }}>В корзину</Button>
                         </div>
                     </div>
                 </Card.Footer>

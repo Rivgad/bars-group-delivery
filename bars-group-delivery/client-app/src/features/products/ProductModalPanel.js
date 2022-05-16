@@ -41,7 +41,10 @@ const ProductModalPanel = (props) => {
                 <Container className='my-2'>
                     <Row className='mb-3'>
                         <Col >
-                            <Image width={384} height={384} src={product?.image}></Image>
+                            <Image width={384} height={384}
+                                src={product.photo ? `data:image/png;base64,${product.photo}` : `${process.env.PUBLIC_URL}/dish-icon.svg`}
+                                alt='Изображение'
+                            />
                         </Col>
                         <Col className='d-flex flex-column'>
                             <Stack gap={2} >
@@ -55,12 +58,12 @@ const ProductModalPanel = (props) => {
                                 <h5>Состав: </h5>
                                 <Stack direction='horizontal' gap={2} className='flex-wrap'>
                                     {
-                                        product?.ingredients?.map((item, idx) => (
-                                            <span key={idx}
+                                        product?.ingredients?.map((item) => (
+                                            <span key={item.id}
                                                 style={{ border: '1px solid', fontSize: 15, borderRadius: 30, textAlign: 'center' }}
                                                 className='px-2'
                                             >
-                                                {item}
+                                                {item.title}
                                             </span>
                                         ))
                                     }

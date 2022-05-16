@@ -13,6 +13,7 @@ const updateCartItem = (product, item = {}, quantity) => {
         title = product.title,
         price = product.price,
         total = 0,
+        photo = product.photo
     } = item;
     
     const newItem ={
@@ -20,7 +21,8 @@ const updateCartItem = (product, item = {}, quantity) => {
         title,
         price,
         count: count + quantity,
-        total: total + product.price * quantity
+        total: total + product.price * quantity,
+        photo: photo
     }
     
     return newItem; 

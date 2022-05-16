@@ -20,6 +20,7 @@ const ProductGrid = () => {
         })
     }
     const openModalPanel = (data) => {
+        //console.log(data);
         setProductData(data);
         setModalShow(true);
     }
@@ -29,13 +30,12 @@ const ProductGrid = () => {
     }
 
     const productIds = useSelector(selectProductIds);
-    
     const renderedProductCards = productIds.map((id) => (
         <Col key={id}>
             <ProductCard id={id} onButtonClick={(data) => openModalPanel(data)} />
         </Col>
     ))
-    
+
     return (
         <>
             <Container >
@@ -43,15 +43,19 @@ const ProductGrid = () => {
                     {renderedProductCards}
                 </Row>
             </Container>
-            <ProductModalPanel
-                id={productData.id}
-                incCount={IncCount}
-                decCount={DecCount}
-                count={count}
-                onAddButtonClick={null}
-                show={modalShow}
-                onHide={hideModalPanel}
-            />
+            {
+                productData.id &&
+                <ProductModalPanel
+                    id={productData.id}
+                    incCount={IncCount}
+                    decCount={DecCount}
+                    count={count}
+                    onAddButtonClick={null}
+                    show={modalShow}
+                    onHide={hideModalPanel}
+
+                />
+            }
         </>
     );
 }

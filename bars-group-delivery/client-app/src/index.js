@@ -7,17 +7,15 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import store from './store';
-import { fetchProducts } from './features/products/productsSlice';
 
 import App from './App';
 import CheckoutPage from './features/checkout/CheckoutPage';
 import MenuPage from './features/products/MenuPage';
 import ProfilePage from './features/profile/ProfilePage';
 import LoginPage from './features/login/LoginPage'
+import CategoryPage from './features/categories/CategoryPage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-
-store.dispatch(fetchProducts());
 
 root.render(
   <React.StrictMode>
@@ -25,7 +23,9 @@ root.render(
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<App />} >
-            <Route index element={<MenuPage />} />
+            <Route index element={<CategoryPage />} />
+            <Route path='categories/:id' element={<MenuPage />} />
+
             <Route path='checkout' element={<CheckoutPage />} />
             <Route path='profile' element={<ProfilePage />} />
             <Route path='login' element={<LoginPage />} />
