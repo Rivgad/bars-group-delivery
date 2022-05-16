@@ -12,7 +12,7 @@ using bars_group_delivery.EntityFramework;
 namespace bars_group_delivery.EntityFramework.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220515193102_Initial")]
+    [Migration("20220516081700_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,45 @@ namespace bars_group_delivery.EntityFramework.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("bars_group_delivery.EntityFramework.Models.Address", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AccountId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("City")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("Entrance")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("Flat")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("Floor")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("House")
+                        .HasColumnType("text");
+
+                    b.Property<string>("InterCom")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("Addresses");
+                });
 
             modelBuilder.Entity("bars_group_delivery.EntityFramework.Models.Category", b =>
                 {
@@ -77,6 +116,9 @@ namespace bars_group_delivery.EntityFramework.Migrations
                     b.Property<string>("AccountId")
                         .HasColumnType("text");
 
+                    b.Property<int>("AddressId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreateDateTime")
                         .HasColumnType("timestamp with time zone");
 
@@ -89,6 +131,8 @@ namespace bars_group_delivery.EntityFramework.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
+
+                    b.HasIndex("AddressId");
 
                     b.ToTable("Orders");
                 });
@@ -370,7 +414,19 @@ namespace bars_group_delivery.EntityFramework.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
                     b.HasDiscriminator().HasValue("Account");
+                });
+
+            modelBuilder.Entity("bars_group_delivery.EntityFramework.Models.Address", b =>
+                {
+                    b.HasOne("bars_group_delivery.EntityFramework.Models.Account", "Account")
+                        .WithMany("Addresses")
+                        .HasForeignKey("AccountId");
+
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("bars_group_delivery.EntityFramework.Models.Ingredient", b =>
@@ -390,7 +446,15 @@ namespace bars_group_delivery.EntityFramework.Migrations
                         .WithMany("Orders")
                         .HasForeignKey("AccountId");
 
+                    b.HasOne("bars_group_delivery.EntityFramework.Models.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Account");
+
+                    b.Navigation("Address");
                 });
 
             modelBuilder.Entity("bars_group_delivery.EntityFramework.Models.OrderProduct", b =>
@@ -490,6 +554,8 @@ namespace bars_group_delivery.EntityFramework.Migrations
 
             modelBuilder.Entity("bars_group_delivery.EntityFramework.Models.Account", b =>
                 {
+                    b.Navigation("Addresses");
+
                     b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618

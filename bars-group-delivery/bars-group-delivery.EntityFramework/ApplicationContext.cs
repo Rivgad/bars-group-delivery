@@ -18,6 +18,7 @@ namespace bars_group_delivery.EntityFramework
         public DbSet<OrderProduct> OrderProducts { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Address> Addresses { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options):base(options)
         {
