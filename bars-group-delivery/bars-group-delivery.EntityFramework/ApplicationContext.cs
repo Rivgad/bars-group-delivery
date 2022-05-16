@@ -20,11 +20,11 @@ namespace bars_group_delivery.EntityFramework
         public DbSet<Product> Products { get; set; }
         public DbSet<Address> Addresses { get; set; }
 
-        public ApplicationContext(DbContextOptions<ApplicationContext> options):base(options)
+        public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
-            
+            //Database.EnsureCreated();
         }
-        protected override void OnModelCreating(ModelBuilder modelBuilder) 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<OrderProduct>(
                  j =>
@@ -32,6 +32,14 @@ namespace bars_group_delivery.EntityFramework
                      j.HasKey(item => new { item.ProductId, item.OrderId });
                      j.Property(item => item.Quantity);
                  });
+            //modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole("user"));
+            //modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
+            //{
+            //    Id = new Guid().ToString(),
+            //    Name = "user",
+            //    NormalizedName = "user".ToUpper()
+            //});
+
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -78,13 +78,13 @@ namespace bars_group_delivery.WebAPI.Services
 
             var result = await _userManager.CreateAsync(user, password);
 
-            if (result.Succeeded)
-            {
-                var identityUsr = await _userManager.FindByNameAsync(phone);
-                var addToRoleResult = await _userManager.AddToRoleAsync(identityUsr, "user");
-                if (!addToRoleResult.Succeeded)
-                    result = addToRoleResult;
-            }
+            //if (result.Succeeded)
+            //{
+            //    var identityUsr = await _userManager.FindByNameAsync(phone);
+            //    var addToRoleResult = await _userManager.AddToRoleAsync(identityUsr, "user");
+            //    if (!addToRoleResult.Succeeded)
+            //        result = addToRoleResult;
+            //}
             return result;
         }
 
