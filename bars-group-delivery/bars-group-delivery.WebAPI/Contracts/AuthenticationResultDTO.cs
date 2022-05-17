@@ -2,9 +2,9 @@
 
 namespace bars_group_delivery.WebAPI.Contracts
 {
-    public class AuthenticationResult
+    public class AuthenticationResultDTO
     {
-        public AuthenticationResult(string accessToken, string phone, string[] roles, string name = "")
+        public AuthenticationResultDTO(string accessToken, string phone, string[] roles, string name = "")
         {
             AccessToken = accessToken;
             Phone = phone;

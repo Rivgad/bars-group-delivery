@@ -2,7 +2,7 @@
 
 namespace bars_group_delivery.WebAPI.Contracts
 {
-    public class ProductCreateRequestModel
+    public class ProductCreateDTO
     {
         [JsonPropertyName("title")]
         public string Title { get; set; }

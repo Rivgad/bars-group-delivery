@@ -41,7 +41,7 @@ namespace bars_group_delivery.WebAPI.Services
             return result;
         }
 
-        public async Task<AuthenticationResult?> Login(string phone, string password)
+        public async Task<AuthenticationResultDTO?> Login(string phone, string password)
         {
             var identityUsr = await _userManager.FindByNameAsync(phone);
 
@@ -59,7 +59,7 @@ namespace bars_group_delivery.WebAPI.Services
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var stringToken = tokenHandler.WriteToken(token);
 
-                var result = new AuthenticationResult(
+                var result = new AuthenticationResultDTO(
                     accessToken: stringToken,
                     phone: identityUsr.UserName,
                     name: identityUsr.Name ?? "",

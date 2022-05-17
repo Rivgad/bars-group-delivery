@@ -28,7 +28,7 @@ namespace bars_group_delivery.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Auth([FromBody] AuthenticationModel authModel)
+        public async Task<IActionResult> Auth([FromBody] AuthenticationDTO authModel)
         {
             var loginResult = await _authenticationService.Login(authModel.Phone, authModel.Password);
             if (loginResult != null)

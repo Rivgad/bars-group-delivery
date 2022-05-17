@@ -49,7 +49,7 @@ namespace bars_group_delivery.WebAPI.Controllers
 
         [Authorize(Roles = "user")]
         [HttpPost]
-        public async Task<IActionResult> UpdateUserInfo(ProfileUpdateRequestModel model)
+        public async Task<IActionResult> UpdateUserInfo(ProfileUpdateDTO model)
         {
             string? accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (accountId == null)

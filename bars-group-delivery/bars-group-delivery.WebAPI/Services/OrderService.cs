@@ -27,7 +27,7 @@ namespace bars_group_delivery.WebAPI.Services
                     .Products
                     .Where(item => productIds.Contains(item.Id) == true)
                     .ToDictionaryAsync(item => item.Id, item => item.Price);
-                
+
                 if (productPriceDict.Count() != productsQuantityDict.Count)
                 {
                     var products = productsQuantityDict
@@ -65,13 +65,16 @@ namespace bars_group_delivery.WebAPI.Services
 
         public async Task<Order> CreateOrder(string accountId, string address, IEnumerable<OrderProduct> orderProducts)
         {
-            if (orderProducts?.Count() == 0)
+            if (orderProducts == null)
+                throw new ArgumentNullException(nameof(orderProducts));
+
+            if (!orderProducts.Any())
                 throw new Exception();
 
             try
             {
                 var totalPrice = await CalculateAndValidateOrderPrice(orderProducts);
-                Order newOrder = new Order()
+                Order newOrder = new()
                 {
                     AccountId = accountId,
                     Address = address,
@@ -83,7 +86,7 @@ namespace bars_group_delivery.WebAPI.Services
                             ProductId = item.Key,
                             Quantity = item.Select(item => item.Quantity).Sum(),
                         }).ToList(),
-                    CreateDateTime = DateTime.UtcNow,
+                    CreateDateTime = DateTime.Now.ToUniversalTime(),
                     OrderStatus = OrderStatus.Created
                 };
 
@@ -105,7 +108,7 @@ namespace bars_group_delivery.WebAPI.Services
                 .Orders
                 .Include(item => item.OrderProducts)
                 .ThenInclude(item => item.Product)
-                .FirstOrDefaultAsync(item=>item.Id == id);
+                .FirstOrDefaultAsync(item => item.Id == id);
 
             return result;
         }
@@ -114,8 +117,8 @@ namespace bars_group_delivery.WebAPI.Services
         {
             var result = await _applicationContext
                 .Orders
-                .Include(item=>item.OrderProducts)
-                .ThenInclude(item=>item.Product)
+                .Include(item => item.OrderProducts)
+                .ThenInclude(item => item.Product)
                 .Where(item => item.AccountId == accountId)
                 .ToListAsync();
 

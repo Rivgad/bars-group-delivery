@@ -32,7 +32,7 @@ namespace bars_group_delivery.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct(ProductCreateRequestModel productModel)
+        public async Task<IActionResult> CreateProduct(ProductCreateDTO productModel)
         {
             Product newProduct = new Product()
             {

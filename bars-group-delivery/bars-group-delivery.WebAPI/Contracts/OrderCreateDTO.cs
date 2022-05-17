@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace bars_group_delivery.WebAPI.Contracts
 {
-    public class OrderRequestModel
+    public class OrderCreateDTO
     {
         public class Product
         {
