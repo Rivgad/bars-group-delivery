@@ -30,7 +30,7 @@ namespace bars_group_delivery.WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUserInfo()
         {
-            string? accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            string? accountId = User.FindFirst("UserId")?.Value;
             if (accountId == null)
                 return StatusCode(403);
 
@@ -51,7 +51,7 @@ namespace bars_group_delivery.WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateUserInfo(ProfileUpdateDTO model)
         {
-            string? accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            string? accountId = User.FindFirst("UserId")?.Value;
             if (accountId == null)
                 return StatusCode(403);
 
@@ -76,12 +76,13 @@ namespace bars_group_delivery.WebAPI.Controllers
         [HttpPost("[Action]")]
         public async Task<IActionResult> DeleteAddress(int id)
         {
-            string? accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            string? accountId = User.FindFirst("UserId")?.Value;
             if (accountId == null)
                 return StatusCode(403);
 
             try
             {
+
                 _applicationContext.Addresses.Remove(new Address() { Id= id });
                 await _applicationContext.SaveChangesAsync();
                 return Ok(new { id });
