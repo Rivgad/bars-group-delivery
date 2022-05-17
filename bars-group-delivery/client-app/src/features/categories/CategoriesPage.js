@@ -1,10 +1,21 @@
+import { Row } from "react-bootstrap";
 import CommonPage from "../common/CommonPage"
 import CategoriesGrid from "./CategoriesGrid";
 
 const CategoriesPage = () => {
 
     return (
-        <CategoriesGrid/>
+        <>
+            <Row className='mb-3'>
+                <h1 >
+                    Категории продуктов
+                </h1>
+            </Row>
+            <Row>
+                <CategoriesGrid />
+
+            </Row>
+        </>
     )
 }
 
