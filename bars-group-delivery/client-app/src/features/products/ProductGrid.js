@@ -6,7 +6,7 @@ import ProductModalPanel from './ProductModalPanel'
 import ProductCard from "./ProductCard";
 import { selectProductIds } from "./productsSlice";
 
-const ProductGrid = () => {
+const ProductsGrid = () => {
     const [modalShow, setModalShow] = useState(false);
     const [productData, setProductData] = useState({});
     const [count, setCount] = useState(1);
@@ -20,7 +20,6 @@ const ProductGrid = () => {
         })
     }
     const openModalPanel = (data) => {
-        //console.log(data);
         setProductData(data);
         setModalShow(true);
     }
@@ -60,4 +59,4 @@ const ProductGrid = () => {
     );
 }
 
-export default ProductGrid;
+export default ProductsGrid;

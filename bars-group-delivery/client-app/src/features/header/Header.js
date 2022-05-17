@@ -25,7 +25,7 @@ const Header = () => {
                     </Link>
                     <Nav className="me-auto">
                         <LinkContainer to='/categories'>
-                            <Nav.Link>Меню</Nav.Link>
+                            <Nav.Link>Категории</Nav.Link>
                         </LinkContainer>
                     </Nav>
                     <Nav className='justify-content-end me-3'>

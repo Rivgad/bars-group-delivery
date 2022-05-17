@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { selectCategoryIds } from "./categoriesSlice";
 import CategoryCard from "./CategoryCard"
 
-const CategoryGrid = () => {
+const CategoriesGrid = () => {
     const categoryIds = useSelector(selectCategoryIds);
 
     const renderedProductCards = categoryIds?.map((id) => (
@@ -21,4 +21,4 @@ const CategoryGrid = () => {
     )
 }
 
-export default CategoryGrid;
+export default CategoriesGrid;

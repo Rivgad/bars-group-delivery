@@ -16,7 +16,6 @@ const OrdersTable = () => {
                 <tr>
                     <th>Номер</th>
                     <th>Дата</th>
-                    <th>Блюда</th>
                     <th>Сумма</th>
                     <th>Статус</th>
                 </tr>

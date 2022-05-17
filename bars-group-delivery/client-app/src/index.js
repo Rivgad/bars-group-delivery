@@ -10,13 +10,13 @@ import store from './store';
 
 import App from './App';
 import CheckoutPage from './features/checkout/CheckoutPage';
-import MenuPage from './features/products/MenuPage';
 import ProfilePage from './features/profile/ProfilePage';
 import LoginPage from './features/login/LoginPage'
-import CategoryPage from './features/categories/CategoryPage';
 import { fetchCategories } from './features/categories/categoriesSlice';
 import OrdersHistoryPage from './features/orders/OrdersHistoryPage';
 import RequireAuth from './features/auth/RequireAuth';
+import CategoriesPage from './features/categories/CategoriesPage';
+import CurrentCategoryPage from './features/products/CurrentCategoryPage';
 
 store.dispatch(fetchCategories())
 
@@ -28,9 +28,9 @@ root.render(
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<App />} >
-            <Route index element={<CategoryPage />} />
-            <Route path='categories' element={<CategoryPage />} />
-            <Route path='categories/:id' element={<MenuPage />} />
+            <Route index element={<CategoriesPage />} />
+            <Route path='categories' element={<CategoriesPage />} />
+            <Route path='categories/:id' element={<CurrentCategoryPage />} />
             <Route
               path='orders'
               element={
