@@ -1,9 +1,7 @@
 ﻿using bars_group_delivery.EntityFramework;
 using bars_group_delivery.EntityFramework.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace bars_group_delivery.WebAPI.Extensions
 {

@@ -1,8 +1,6 @@
 ﻿using bars_group_delivery.EntityFramework;
 using bars_group_delivery.EntityFramework.Models;
 using bars_group_delivery.WebAPI.Contracts;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

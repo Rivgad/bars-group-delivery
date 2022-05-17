@@ -3,7 +3,6 @@ using bars_group_delivery.EntityFramework.Models;
 using bars_group_delivery.WebAPI.Contracts;
 using bars_group_delivery.WebAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -43,7 +42,7 @@ namespace bars_group_delivery.WebAPI.Services
                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_securityKey));
                 var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
                 var token = new JwtSecurityToken(
-                    claims: new List<Claim> { new (ClaimTypes.MobilePhone, userName), new ("UserId", identityUsr.Id) }, 
+                    claims: new List<Claim> { new (ClaimTypes.MobilePhone, userName), new ("UserId", identityUsr.Id) },
                     issuer: _issuer,
                     audience: _audience,
                     signingCredentials: credentials);
