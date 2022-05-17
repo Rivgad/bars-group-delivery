@@ -8,11 +8,16 @@ const CategoryCard = ({ id }) => {
     const navigate = useNavigate();
 
     return (
-        <Card onClick={() => navigate(`categories/${id}`)} className=' bg-dark text-white d-flex overflow-hidden' style={{height:300}}>
-            <Card.Img src={`data:image/png;base64,${category.photo}`} className=' opacity-50 h-100 ' style={{ 'objectFit': 'cover'}} />
+        <Card
+            role='button'
+            onClick={() => navigate(`/categories/${id}`)}
+            className=' bg-dark text-white d-flex overflow-hidden'
+            style={{ height: 300 }}
+        >
+            <Card.Img src={`data:image/png;base64,${category.photo}`} className=' opacity-50 h-100 ' style={{ 'objectFit': 'cover' }} />
             <Card.ImgOverlay>
                 <Card.Title>{category.title}</Card.Title>
-                
+
             </Card.ImgOverlay>
         </Card>
     )
