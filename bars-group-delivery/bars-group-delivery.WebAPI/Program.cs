@@ -1,5 +1,6 @@
 using bars_group_delivery.EntityFramework;
 using bars_group_delivery.EntityFramework.Models;
+using bars_group_delivery.WebAPI.Extensions;
 using bars_group_delivery.WebAPI.Services;
 using bars_group_delivery.WebAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -38,6 +39,7 @@ builder.Services.AddIdentity<Account, IdentityRole>(
     .AddEntityFrameworkStores<ApplicationContext>()
     .AddUserManager<UserManager<Account>>()
     .AddRoleManager<RoleManager<IdentityRole>>()
+    .AddSignInManager<SignInManager<Account>>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IConfiguration, ConfigurationManager>();
@@ -64,17 +66,9 @@ builder.Services.AddAuthentication(
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
         };
     });
-builder.Services.AddScoped<IAuthenticationService>(services =>
-{
-    return new AuthenticationService(
-        applicationContext: services.GetRequiredService<ApplicationContext>(),
-        userManager: services.GetRequiredService<UserManager<Account>>(),
-        issuer: configuration["JWT:ValidIssuer"],
-        audience: configuration["JWT:ValidAudience"],
-        securityKey: configuration["JWT:Secret"]);
-});
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
-
+builder.Services.AddSingleton<IConfiguration>((services) => configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -95,5 +89,9 @@ app.UseEndpoints(endpoints =>
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
 });
+
+app.PrepareDatabase(configuration)
+    .GetAwaiter()
+    .GetResult();
 
 app.Run();

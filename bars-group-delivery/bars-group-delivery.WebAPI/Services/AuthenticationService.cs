@@ -20,31 +20,22 @@ namespace bars_group_delivery.WebAPI.Services
         private readonly string _audience;
         private readonly string _securityKey;
 
-        public AuthenticationService(UserManager<Account> userManager, string issuer, string audience, string securityKey, ApplicationContext applicationContext)
+        public AuthenticationService(
+            UserManager<Account> userManager, 
+            ApplicationContext applicationContext, 
+            IConfiguration configuration)
         {
             _userManager = userManager;
-            _issuer = issuer;
-            _audience = audience;
-            _securityKey = securityKey;
+            _issuer = configuration["JWT:ValidIssuer"];
+            _audience = configuration["JWT:ValidAudience"];
+            _securityKey = configuration["JWT:Secret"];
             _applicationContext = applicationContext;
         }
-        public async Task<string> GetPhoneCodeAsync(Account account,string phone)
+
+        public async Task<AuthenticationResultDTO?> Login(string userName, string password)
         {
-            var result = await _userManager.GenerateChangePhoneNumberTokenAsync(account, phone);
-
-            return result;
-        } 
-        public async Task<bool> VerifyPhoneCodeAsync(Account account,string phone, string token)
-        {
-            var result = await _userManager.VerifyChangePhoneNumberTokenAsync(account, token, phone);
-
-            return result;
-        }
-
-        public async Task<AuthenticationResultDTO?> Login(string phone, string password)
-        {
-            var identityUsr = await _userManager.FindByNameAsync(phone);
-
+            var identityUsr = await _userManager.FindByNameAsync(userName);
+            
             if (await _userManager.CheckPasswordAsync(identityUsr, password))
             {
                 var userRoles = await _userManager.GetRolesAsync(identityUsr);
@@ -52,7 +43,7 @@ namespace bars_group_delivery.WebAPI.Services
                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_securityKey));
                 var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
                 var token = new JwtSecurityToken(
-                    claims: new List<Claim> { new (ClaimTypes.MobilePhone, phone), new ("UserId", identityUsr.Id) }, 
+                    claims: new List<Claim> { new (ClaimTypes.MobilePhone, userName), new ("UserId", identityUsr.Id) }, 
                     issuer: _issuer,
                     audience: _audience,
                     signingCredentials: credentials);
@@ -80,13 +71,6 @@ namespace bars_group_delivery.WebAPI.Services
 
             var result = await _userManager.CreateAsync(user, password);
 
-            //if (result.Succeeded)
-            //{
-            //    var identityUsr = await _userManager.FindByNameAsync(phone);
-            //    var addToRoleResult = await _userManager.AddToRoleAsync(identityUsr, "user");
-            //    if (!addToRoleResult.Succeeded)
-            //        result = addToRoleResult;
-            //}
             return result;
         }
 
@@ -99,11 +83,11 @@ namespace bars_group_delivery.WebAPI.Services
             return account;
         }
 
-        public async Task UpdateAccount(Account account)
+        public async Task<IdentityResult> UpdateAccount(Account account)
         {
             try
             {
-                await _userManager.UpdateAsync(account);
+                return await _userManager.UpdateAsync(account);
             }
             catch (Exception ex)
             {

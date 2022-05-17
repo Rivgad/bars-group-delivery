@@ -9,6 +9,6 @@ namespace bars_group_delivery.WebAPI.Services.Interfaces
         Task<AuthenticationResultDTO?> Login(string username, string password);
         Task<IdentityResult> Registration(string phone, string password);
         Task<Account?> GetAccountById(string id);
-        Task UpdateAccount(Account account);
+        Task<IdentityResult> UpdateAccount(Account account);
     }
 }
