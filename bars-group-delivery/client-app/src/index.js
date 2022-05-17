@@ -15,6 +15,7 @@ import ProfilePage from './features/profile/ProfilePage';
 import LoginPage from './features/login/LoginPage'
 import CategoryPage from './features/categories/CategoryPage';
 import { fetchCategories } from './features/categories/categoriesSlice';
+import OrdersHistoryPage from './features/orders/OrdersHistoryPage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -27,8 +28,9 @@ root.render(
         <Routes>
           <Route path='/' element={<App />} >
             <Route index element={<CategoryPage />} />
+            <Route path='categories' element={<CategoryPage />} />
             <Route path='categories/:id' element={<MenuPage />} />
-
+            <Route path='orders' element={<OrdersHistoryPage/>}/>
             <Route path='checkout' element={<CheckoutPage />} />
             <Route path='profile' element={<ProfilePage />} />
             <Route path='login' element={<LoginPage />} />

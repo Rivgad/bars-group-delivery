@@ -1,20 +1,18 @@
 import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { RequestStatus } from "../../helpers";
 
-const Status = {
-    Idle: 'idle',
-    Loading: 'loading',
-    Succeeded: 'succeeded',
-    Failed: 'failed',
-}
 
 export const fetchProducts = createAsyncThunk(
     "products/fetchProducts",
     async (id, thunkAPI) => {
         try 
         {
-            const response = await axios.get(`/api/Products?categoryId=${id}`);
-            return response.data;
+            const { data } = await axios.get(`/api/Products?categoryId=${id}`);
+            if(data.length === 0){
+                throw new Error();
+            }
+            return data;
         }
         catch (error) 
         {
@@ -24,7 +22,7 @@ export const fetchProducts = createAsyncThunk(
 )
 
 const initialState = {
-    status: Status.Idle,
+    status: RequestStatus.Idle,
     entities: { },
 }
 
@@ -38,15 +36,15 @@ const productsSlice = createSlice({
                 newEntities[product.id] = product;
             });
             state.entities = newEntities;
-            state.status = Status.Succeeded;
+            state.status = RequestStatus.Succeeded;
         },
         [fetchProducts.rejected]: (state, action) => {
-            state.status = Status.Failed;
-            state.entities = null;
+            state.status = RequestStatus.Failed;
+            state.entities = {};
         },
         [fetchProducts.pending]: (state, action) => {
-            state.status = Status.Loading;
-            state.entities = null;
+            state.status = RequestStatus.Loading;
+            state.entities = {};
         }
     }
 })

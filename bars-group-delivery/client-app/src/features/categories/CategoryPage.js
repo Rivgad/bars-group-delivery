@@ -1,17 +1,11 @@
-import { Col, Container, Row } from "react-bootstrap"
+import CommonPage from "../common/CommonPage"
 import CategoryGrid from "./CategoryGrid"
 
 const CategoryPage = () => {
 
     return (
-        <Container className='pt-0 pb-5' fluid>
-            <Row>
-                <Col className='pt-3'>
-                    <CategoryGrid />
-                </Col>
-            </Row>
-        </Container>
+        <CategoryGrid />
     )
 }
 
-export default CategoryPage;
+export default CommonPage(CategoryPage);

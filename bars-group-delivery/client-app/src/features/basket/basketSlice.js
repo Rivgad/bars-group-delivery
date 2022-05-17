@@ -1,9 +1,15 @@
-import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import authHeader from "../../services/authHeader";
+
+import { RequestStatus } from "../../helpers";
+import { createOrderRequest } from "../orders/ordersSlice";
 
 const initialState = {
-    isOpen:false,
     entities:{},
-    totalPrice:0
+    totalPrice:0,
+
+    createOrderStatus: RequestStatus.Idle
 }
 
 const updateCartItem = (product, item = {}, quantity) => {
@@ -53,14 +59,22 @@ const basketSlice = createSlice(
                     }
                 }
             },
-            isOpenChanged(state, action){
-                state.isOpen = action.payload;
+            onBacketCleared(state, action){
+                state.entities = {};
+                state.totalPrice = null;
             }
+        },
+        extraReducers:builder=>{
+            builder
+                .addCase(createOrderRequest.fulfilled, (state, action)=>{
+                    state.entities = {};
+                    state.totalPrice = 0;
+                })
         }
     }
 )
 
-export const { productCountChanged, isOpenChanged } = basketSlice.actions;
+export const { productCountChanged, onBacketCleared } = basketSlice.actions;
 
 export default basketSlice.reducer;
 

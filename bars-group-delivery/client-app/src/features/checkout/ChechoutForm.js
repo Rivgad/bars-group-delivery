@@ -16,6 +16,8 @@ const schema = object({
 })
 const CheckoutFrom = ({ onSubmit }) => {
     const { isLoggedIn, user:currentUser } = useSelector(state => state.auth)
+    const currentOrder = useSelector((state) => state.orders.currentOrder);
+    const disabled = Object.entries(currentOrder).length !== 0;
 
     return (
         <Formik
@@ -138,7 +140,7 @@ const CheckoutFrom = ({ onSubmit }) => {
                             as='textarea'
                             placeholder="Напишите, как вас найти или пожелания для блюд..." />
                     </Form.Group>
-                    <Button type='submit' className='w-100' size='lg'>Заказать</Button>
+                    <Button disabled={disabled} type='submit' className='w-100' size='lg'>Заказать</Button>
                 </Form>
             )}
         </Formik>
