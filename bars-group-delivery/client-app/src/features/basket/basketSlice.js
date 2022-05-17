@@ -1,6 +1,4 @@
-import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-import authHeader from "../../services/authHeader";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 import { RequestStatus } from "../../helpers";
 import { createOrderRequest } from "../orders/ordersSlice";

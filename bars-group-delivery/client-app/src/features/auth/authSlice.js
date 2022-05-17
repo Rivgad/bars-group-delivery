@@ -41,3 +41,5 @@ const authSlice = createSlice({
 });
 
 export default authSlice.reducer;
+
+export const selectIsLoggedIn = state => state.auth.isLoggedIn;

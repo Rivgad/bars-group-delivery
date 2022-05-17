@@ -16,10 +16,11 @@ import LoginPage from './features/login/LoginPage'
 import CategoryPage from './features/categories/CategoryPage';
 import { fetchCategories } from './features/categories/categoriesSlice';
 import OrdersHistoryPage from './features/orders/OrdersHistoryPage';
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import RequireAuth from './features/auth/RequireAuth';
 
 store.dispatch(fetchCategories())
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
@@ -30,9 +31,23 @@ root.render(
             <Route index element={<CategoryPage />} />
             <Route path='categories' element={<CategoryPage />} />
             <Route path='categories/:id' element={<MenuPage />} />
-            <Route path='orders' element={<OrdersHistoryPage/>}/>
+            <Route
+              path='orders'
+              element={
+                <RequireAuth>
+                  <OrdersHistoryPage />
+                </RequireAuth>
+              }
+            />
             <Route path='checkout' element={<CheckoutPage />} />
-            <Route path='profile' element={<ProfilePage />} />
+            <Route
+              path='profile'
+              element={
+                <RequireAuth>
+                  <ProfilePage />
+                </RequireAuth>
+              }
+            />
             <Route path='login' element={<LoginPage />} />
           </Route>
         </Routes>

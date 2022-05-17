@@ -28,7 +28,7 @@ const BasketItem = ({ id }) => {
                             onDecClick={() => dispatch(productCountChanged(product, -1))}
                             count={product.count} />
                     </Col>
-                    <Col xs={3} >
+                    <Col xs={4} className='px-0 justify-content-end d-flex'>
                         <span>{product?.total} ₽</span>
                     </Col>
                 </Row>

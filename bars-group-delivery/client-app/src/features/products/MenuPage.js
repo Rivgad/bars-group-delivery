@@ -1,9 +1,9 @@
 import { useEffect } from "react"
 import { useDispatch } from "react-redux"
-import { Col, Container, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import ProductGrid from "./ProductGrid";
 import { fetchProducts } from './productsSlice';
+import CommonPage from "../common/CommonPage";
 
 const MenuPage = () => {
     let { id: categoryId } = useParams();
@@ -14,15 +14,9 @@ const MenuPage = () => {
 
     return (
         <>
-            <Container className='pt-0 pb-5' fluid>
-                <Row>
-                    <Col className='pt-3'>
-                        <ProductGrid />
-                    </Col>
-                </Row>
-            </Container>
+            <ProductGrid />
         </>
     );
 }
 
-export default MenuPage;
+export default CommonPage(MenuPage);

@@ -4,16 +4,16 @@ import {
     Nav,
     NavDropdown,
 } from 'react-bootstrap'
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../auth/authSlice';
 import BasketOffcanvasButton from '../basket/BasketOffcanvasButton';
+import { LinkContainer } from 'react-router-bootstrap';
 
 const Header = () => {
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     const { user: currentUser } = useSelector((state) => state.auth);
-
+    const handleClickLogout = () => dispatch(logout());
     return (
         <>
             <Navbar className='position-sticky' fixed='top' bg='light' expand="lg">
@@ -24,26 +24,34 @@ const Header = () => {
                         </Navbar.Brand>
                     </Link>
                     <Nav className="me-auto">
-                        <Nav.Link>Меню</Nav.Link>
+                        <LinkContainer to='/categories'>
+                            <Nav.Link>Меню</Nav.Link>
+                        </LinkContainer>
                     </Nav>
                     <Nav className='justify-content-end me-3'>
                         <Nav.Item className='me-1'>
                             {
                                 currentUser ?
                                     <NavDropdown title="Личный кабинет" id="basic-nav-dropdown" align='end'>
-                                        <NavDropdown.Item onClick={() => navigate('/profile')}>Мой профиль</NavDropdown.Item>
-                                        <NavDropdown.Item onClick={() => navigate('/orders')}>Мои заказы</NavDropdown.Item>
+                                        <LinkContainer to='/profile' >
+                                            <NavDropdown.Item >Мой профиль</NavDropdown.Item>
+                                        </LinkContainer>
+                                        <LinkContainer to='/orders' >
+                                            <NavDropdown.Item >Мои заказы</NavDropdown.Item>
+                                        </LinkContainer>
                                         <NavDropdown.Divider />
-                                        <NavDropdown.Item onClick={() => dispatch(logout())}>Выйти</NavDropdown.Item>
+                                        <NavDropdown.Item onClick={handleClickLogout}>Выйти</NavDropdown.Item>
                                     </NavDropdown>
                                     :
-                                    <NavLink to='login' className=' nav-link'>
-                                        Войти
-                                    </NavLink>
+                                    <LinkContainer to='/login' replace>
+                                        <Nav.Link>
+                                            Войти
+                                        </Nav.Link>
+                                    </LinkContainer>
                             }
                         </Nav.Item>
                         <Nav.Item style={{ 'minWidth': 140 }}>
-                            <BasketOffcanvasButton/>
+                            <BasketOffcanvasButton />
                         </Nav.Item>
                     </Nav>
                 </Container>

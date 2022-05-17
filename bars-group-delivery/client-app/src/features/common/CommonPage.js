@@ -1,4 +1,4 @@
-import { Col, Container, Row } from "react-bootstrap";
+import { Container} from "react-bootstrap";
 
 const CommonPage = (View) =>{
     return props=> (

@@ -15,7 +15,7 @@ const schema = object({
     comment: string().optional(),
 })
 const CheckoutFrom = ({ onSubmit }) => {
-    const { isLoggedIn, user:currentUser } = useSelector(state => state.auth)
+    const { isLoggedIn, user: currentUser } = useSelector(state => state.auth)
     const currentOrder = useSelector((state) => state.orders.currentOrder);
     const disabled = Object.entries(currentOrder).length !== 0;
 
@@ -76,8 +76,8 @@ const CheckoutFrom = ({ onSubmit }) => {
                         </Col>
                     </Row>
 
-                    <Row className='mb-4'>
-                        <Col>
+                    <Row xs={2} md={4}>
+                        <Col className='mb-4'>
                             <FloatingLabel controlId="entrance" label="Подъезд">
                                 <NumberFormat
                                     allowNegative={false}
@@ -90,7 +90,7 @@ const CheckoutFrom = ({ onSubmit }) => {
                                 />
                             </FloatingLabel>
                         </Col>
-                        <Col>
+                        <Col className='mb-4'>
                             <FloatingLabel controlId="intercom" label="Домофон">
                                 <NumberFormat
                                     allowNegative={false}
@@ -103,7 +103,7 @@ const CheckoutFrom = ({ onSubmit }) => {
                                 />
                             </FloatingLabel>
                         </Col>
-                        <Col>
+                        <Col className='mb-4'>
                             <FloatingLabel controlId="floor" label="Этаж">
                                 <NumberFormat
                                     allowNegative={false}
@@ -116,7 +116,7 @@ const CheckoutFrom = ({ onSubmit }) => {
                                 />
                             </FloatingLabel>
                         </Col>
-                        <Col>
+                        <Col className='mb-4'>
                             <FloatingLabel controlId="flat" label="Квартира">
                                 <NumberFormat
                                     allowNegative={false}
