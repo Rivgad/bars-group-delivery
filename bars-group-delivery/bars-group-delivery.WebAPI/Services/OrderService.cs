@@ -82,8 +82,8 @@ namespace bars_group_delivery.WebAPI.Services
                         {
                             ProductId = item.Key,
                             Quantity = item.Select(item => item.Quantity).Sum(),
-                        }),
-                    CreateDateTime = DateTime.Now,
+                        }).ToList(),
+                    CreateDateTime = DateTime.UtcNow,
                     OrderStatus = OrderStatus.Created
                 };
 

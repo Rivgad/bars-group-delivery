@@ -6,11 +6,17 @@ namespace bars_group_delivery.EntityFramework.Models
     {
         [Description("Создан")]
         Created = 0,
-        [Description("Принят")]
-        Accepted = 1,
+
         [Description("Отклонен")]
-        Declined = 2,
+        Declined = 1,
+
+        [Description("Готовится")]
+        InProgress = 2,
+
+        [Description("Доставляется")]
+        Delivering = 3,
+
         [Description("Завершен")]
-        Done = 3,
+        Delivered = 4,
     }
 }

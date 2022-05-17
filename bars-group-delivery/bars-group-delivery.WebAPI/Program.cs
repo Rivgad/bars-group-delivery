@@ -55,8 +55,10 @@ builder.Services.AddAuthentication(
         options.RequireHttpsMetadata = false;
         options.TokenValidationParameters = new TokenValidationParameters()
         {
+            ValidateLifetime = false,
             ValidateIssuer = true,
             ValidateAudience = true,
+
             ValidAudience = configuration["JWT:ValidAudience"],
             ValidIssuer = configuration["JWT:ValidIssuer"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
@@ -83,9 +85,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseRouting();
-
 app.UseAuthentication();
+app.UseRouting();
 app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>

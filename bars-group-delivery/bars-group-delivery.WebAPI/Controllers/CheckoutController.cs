@@ -24,17 +24,18 @@ namespace bars_group_delivery.WebAPI.Controllers
             _orderService = orderService;
         }
 
-        [Authorize(Roles = "user")]
+        [Authorize]
         [HttpPost("[Action]")]
         public async Task<IActionResult> CreateOrder([FromBody] OrderRequestModel order)
         {
-            string? accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            string? accountId = User.FindFirst("UserId")?.Value;
+            
             if (accountId == null)
                 return Forbid();
 
             try
             {
-                var orderProducts = order.Products.Select(item=> new OrderProduct() { ProductId = item.Id, Quantity = item.Quantity });
+                var orderProducts = order.Products.Select(item=> new OrderProduct() { ProductId = item.Id, Quantity = item.Quantity }).ToList();
                 var createdOrder = await _orderService.CreateOrder(accountId, order.Address, orderProducts);
 
                 return CreatedAtAction(
@@ -43,7 +44,8 @@ namespace bars_group_delivery.WebAPI.Controllers
                     {
                         id = createdOrder.Id,
                         status = createdOrder.OrderStatus,
-                        price = createdOrder.TotalPrice
+                        price = createdOrder.TotalPrice,
+                        creationTime = createdOrder.CreateDateTime
                     });
             }
             catch (Exception ex)
