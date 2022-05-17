@@ -8,5 +8,7 @@ namespace bars_group_delivery.EntityFramework.Models
         User = 0,
         [Description("admin")]
         Admin = 1,
+        [Description("employee")]
+        Employee = 2,
     }
 }
