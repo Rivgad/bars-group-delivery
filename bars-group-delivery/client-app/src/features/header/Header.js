@@ -4,7 +4,7 @@ import {
     Nav,
     NavDropdown,
 } from 'react-bootstrap'
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../auth/authSlice';
 import BasketOffcanvasButton from '../basket/BasketOffcanvasButton';
