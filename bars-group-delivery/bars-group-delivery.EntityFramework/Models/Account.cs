@@ -10,8 +10,5 @@ namespace bars_group_delivery.EntityFramework.Models
         public string? Name { get; set; }
         [JsonIgnore]
         public IEnumerable<Order>? Orders { get; set; }
-
-        [JsonIgnore]
-        public IEnumerable<Address>? Addresses { get; set; }
     }
 }

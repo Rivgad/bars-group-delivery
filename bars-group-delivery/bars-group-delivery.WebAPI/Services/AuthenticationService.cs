@@ -82,9 +82,7 @@ namespace bars_group_delivery.WebAPI.Services
 
         public async Task<Account?> GetAccountById(string id)
         {
-            var account = await _applicationContext.Accounts
-                .Include(item => item.Addresses)
-                .FirstOrDefaultAsync(item => item.Id == id);
+            var account = await _userManager.FindByIdAsync(id);
 
             return account;
         }
@@ -93,7 +91,10 @@ namespace bars_group_delivery.WebAPI.Services
         {
             try
             {
-                return await _userManager.UpdateAsync(account);
+                var result = await _userManager.UpdateAsync(account);
+                if(result.Succeeded)
+                    await _applicationContext.SaveChangesAsync();
+                return result; 
             }
             catch (Exception ex)
             {
