@@ -1,5 +1,6 @@
 ﻿using bars_group_delivery.EntityFramework;
 using bars_group_delivery.EntityFramework.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace bars_group_delivery.WebAPI.Controllers
@@ -22,6 +23,7 @@ namespace bars_group_delivery.WebAPI.Controllers
             return categories;
         }
 
+        [Authorize(Roles = $"{RoleConstants.Admin},{RoleConstants.Employee}")]
         [HttpPost]
         public async Task<IActionResult> CreateCategory([FromBody] Category category)
         {

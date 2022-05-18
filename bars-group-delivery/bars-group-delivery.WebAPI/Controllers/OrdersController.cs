@@ -19,7 +19,7 @@ namespace bars_group_delivery.WebAPI.Controllers
             _orderService = orderService;
         }
 
-        [Authorize]
+        [Authorize(Roles = RoleConstants.User)]
         [HttpGet("[Action]")]
         public async Task<IActionResult> UserOrders()
         {
@@ -33,7 +33,7 @@ namespace bars_group_delivery.WebAPI.Controllers
             return Ok(orders);
         }
 
-        [Authorize]
+        [Authorize(Roles = RoleConstants.User)]
         [HttpPost]
         public async Task<IActionResult> CreateOrder([FromBody] OrderCreateDTO order)
         {
@@ -54,8 +54,8 @@ namespace bars_group_delivery.WebAPI.Controllers
                         id = createdOrder.Id,
                         status = createdOrder.OrderStatus,
                         price = createdOrder.TotalPrice,
-                        address=createdOrder.Address,
-                        products = createdOrder.OrderProducts.Select(item=> new {productId=item.ProductId, quantity=item.Quantity}).ToList(),
+                        address = createdOrder.Address,
+                        products = createdOrder.OrderProducts.Select(item => new { productId = item.ProductId, quantity = item.Quantity }).ToList(),
                         creationTime = createdOrder.CreateDateTime
                     });
             }
@@ -65,7 +65,7 @@ namespace bars_group_delivery.WebAPI.Controllers
             }
         }
 
-        [Authorize(Roles = "user")]
+        [Authorize]
         [HttpGet("[Action]")]
         public async Task<IActionResult> GetTotalPrice(OrderCreateDTO.Product[] orderProducts)
         {

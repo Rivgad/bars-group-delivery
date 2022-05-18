@@ -1,6 +1,8 @@
 ﻿using bars_group_delivery.EntityFramework;
+using bars_group_delivery.EntityFramework.Extensions;
 using bars_group_delivery.EntityFramework.Models;
 using bars_group_delivery.WebAPI.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,6 +31,7 @@ namespace bars_group_delivery.WebAPI.Controllers
             return new JsonResult(products);
         }
 
+        [Authorize(Roles = $"{RoleConstants.Admin},{RoleConstants.Employee}")]
         [HttpPost]
         public async Task<IActionResult> CreateProduct(ProductCreateDTO productModel)
         {

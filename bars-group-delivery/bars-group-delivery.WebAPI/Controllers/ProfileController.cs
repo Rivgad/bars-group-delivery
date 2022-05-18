@@ -23,7 +23,7 @@ namespace bars_group_delivery.WebAPI.Controllers
             _authenticationService = authenticationService;
         }
 
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = RoleConstants.User)]
         [HttpGet]
         public async Task<IActionResult> GetUserInfo()
         {
@@ -44,7 +44,7 @@ namespace bars_group_delivery.WebAPI.Controllers
             });
         }
 
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = RoleConstants.User)]
         [HttpPost]
         public async Task<IActionResult> UpdateUserInfo(ProfileUpdateDTO model)
         {
@@ -69,7 +69,7 @@ namespace bars_group_delivery.WebAPI.Controllers
 
         }
 
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = RoleConstants.User)]
         [HttpPost("[Action]")]
         public async Task<IActionResult> DeleteAddress(int id)
         {

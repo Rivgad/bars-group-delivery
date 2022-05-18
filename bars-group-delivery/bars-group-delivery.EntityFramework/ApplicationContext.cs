@@ -22,7 +22,6 @@ namespace bars_group_delivery.EntityFramework
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
-            //Database.EnsureCreated();
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,13 +31,6 @@ namespace bars_group_delivery.EntityFramework
                      j.HasKey(item => new { item.ProductId, item.OrderId });
                      j.Property(item => item.Quantity);
                  });
-            //modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole("user"));
-            //modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
-            //{
-            //    Id = new Guid().ToString(),
-            //    Name = "user",
-            //    NormalizedName = "user".ToUpper()
-            //});
 
             base.OnModelCreating(modelBuilder);
         }
