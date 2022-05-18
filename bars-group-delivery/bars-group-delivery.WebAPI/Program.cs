@@ -69,7 +69,14 @@ builder.Services.AddAuthentication(
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddSingleton<IConfiguration>((services) => configuration);
+
+
 var app = builder.Build();
+
+app.PrepareDatabase()
+    .GetAwaiter()
+    .GetResult();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -90,8 +97,5 @@ app.UseEndpoints(endpoints =>
         pattern: "{controller=Home}/{action=Index}/{id?}");
 });
 
-app.PrepareDatabase(configuration)
-    .GetAwaiter()
-    .GetResult();
-
+app.Logger.LogInformation($"Launching {app.Environment.ApplicationName}");
 app.Run();
