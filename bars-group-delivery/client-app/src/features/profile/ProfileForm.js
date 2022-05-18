@@ -5,24 +5,24 @@ import { Button, Col, Form, Row } from 'react-bootstrap';
 import phoneSchema from '../common/phoneShema';
 
 
-const nameRegExp = /([\D{L}]$)/g;
+const nameRegExp = /([\D{L}]{3,}$)/g;
 
 const schema = object({
     name: string()
-        .required('Введите имя')
-        .matches(nameRegExp, 'Неверный формат имени (только буквы)'),
+        .matches(nameRegExp, 'Неверный формат имени (только буквы, не менее 3 букв)'),
     phone: phoneSchema
 });
 
-const ProfileForm = ({name, phone, onSubmit}) => {
+const ProfileForm = ({name, phone, onSubmit, isLoading}) => {
     return (
         <Formik
             validationSchema={schema}
             onSubmit={onSubmit}
             initialValues={{
-                name: name ?? ' ',
-                phone: phone,
+                name: name ?? "",
+                phone: phone ?? "",
             }}
+            enableReinitialize
         >
             {({
                 handleSubmit,
@@ -66,7 +66,7 @@ const ProfileForm = ({name, phone, onSubmit}) => {
                         </Form.Group>
                     </Row>
 
-                    <Button type="submit" className=' w-100' size='lg'>Сохранить</Button>
+                    <Button type="submit" className=' w-100' size='lg' disabled={isLoading}>Сохранить</Button>
                 </Form>
             )}
         </Formik>
