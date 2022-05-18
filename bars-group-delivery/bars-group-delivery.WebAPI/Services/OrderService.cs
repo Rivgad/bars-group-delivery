@@ -63,7 +63,7 @@ namespace bars_group_delivery.WebAPI.Services
             throw new NotImplementedException();
         }
 
-        public async Task<Order> CreateOrder(string accountId, string address, IEnumerable<OrderProduct> orderProducts)
+        public async Task<Order> CreateOrder(string accountId, string address, string comment, IEnumerable<OrderProduct> orderProducts)
         {
             if (orderProducts == null)
                 throw new ArgumentNullException(nameof(orderProducts));
@@ -87,7 +87,8 @@ namespace bars_group_delivery.WebAPI.Services
                             Quantity = item.Select(item => item.Quantity).Sum(),
                         }).ToList(),
                     CreateDateTime = DateTime.Now.ToUniversalTime(),
-                    OrderStatus = OrderStatus.Created
+                    OrderStatus = OrderStatus.Created,
+                    Comment = comment ?? string.Empty
                 };
 
                 var result = await _applicationContext.Orders.AddAsync(newOrder);

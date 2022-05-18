@@ -45,7 +45,7 @@ namespace bars_group_delivery.WebAPI.Controllers
             try
             {
                 var orderProducts = order.Products.Select(item => new OrderProduct() { ProductId = item.Id, Quantity = item.Quantity }).ToList();
-                var createdOrder = await _orderService.CreateOrder(accountId, order.Address, orderProducts);
+                var createdOrder = await _orderService.CreateOrder(accountId, order.Address, order.Comment, orderProducts);
 
                 return CreatedAtAction(
                     nameof(CreateOrder),
