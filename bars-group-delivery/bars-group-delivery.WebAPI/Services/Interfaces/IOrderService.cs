@@ -4,7 +4,7 @@ namespace bars_group_delivery.WebAPI.Services.Interfaces
 {
     public interface IOrderService
     {
-        Task<Order> CreateOrder(string accountId, string address,IEnumerable<OrderProduct> orderProducts);
+        Task<Order> CreateOrder(string accountId, string address, string comment, IEnumerable<OrderProduct> orderProducts);
         Task<decimal> CalculateAndValidateOrderPrice(IEnumerable<OrderProduct> orderProducts);
         Task<Order?> GetOrder(int id);
         Task<IEnumerable<Order>> GetUserOrders(string accountId);

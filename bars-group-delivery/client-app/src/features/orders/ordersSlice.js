@@ -4,10 +4,6 @@ import axios from "axios";
 import { RequestStatus } from "../../helpers";
 import authHeader from "../../services/authHeader";
 
-const axiosInstance = axios.create({
-    headers:authHeader()
-  });
-
 const initialState = {
     currentOrder: {},
     entities: {},
@@ -17,10 +13,13 @@ const initialState = {
 
 export const createOrderRequest = createAsyncThunk(
     "orders/createOrder",
-    async (orderData, thunkAPI) => {
-        let response = await axiosInstance.post(
+    async (orderData) => {
+        let response = await axios.post(
             '/api/Orders',
-            orderData
+            orderData,
+            {
+                headers: authHeader()
+            }
         );
         return response.data;
     }
@@ -28,9 +27,13 @@ export const createOrderRequest = createAsyncThunk(
 export const fetchOrders = createAsyncThunk(
     "orders/fetchOrders",
     async () => {
-        let response = await axiosInstance
-            .get('/api/Orders/UserOrders');
-        
+        let response = await axios.get(
+            '/api/Orders/UserOrders',
+            {
+                headers: authHeader()
+            }
+        );
+
         return response.data;
     }
 )

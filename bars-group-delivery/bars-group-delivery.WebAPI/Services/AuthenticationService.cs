@@ -1,4 +1,5 @@
 ﻿using bars_group_delivery.EntityFramework;
+using bars_group_delivery.EntityFramework.Extensions;
 using bars_group_delivery.EntityFramework.Models;
 using bars_group_delivery.WebAPI.Contracts;
 using bars_group_delivery.WebAPI.Services.Interfaces;
@@ -38,11 +39,15 @@ namespace bars_group_delivery.WebAPI.Services
             if (await _userManager.CheckPasswordAsync(identityUsr, password))
             {
                 var userRoles = await _userManager.GetRolesAsync(identityUsr);
+                var roleClaims = userRoles.Select(item => new Claim(ClaimTypes.Role, item)).ToList();
+
+                var claims = new List<Claim> { new(ClaimTypes.MobilePhone, userName), new("UserId", identityUsr.Id) };
+                claims.AddRange(roleClaims);
 
                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_securityKey));
                 var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
                 var token = new JwtSecurityToken(
-                    claims: new List<Claim> { new (ClaimTypes.MobilePhone, userName), new ("UserId", identityUsr.Id) },
+                    claims: claims, 
                     issuer: _issuer,
                     audience: _audience,
                     signingCredentials: credentials);
@@ -69,15 +74,15 @@ namespace bars_group_delivery.WebAPI.Services
             Account user = new Account { UserName = phone };
 
             var result = await _userManager.CreateAsync(user, password);
+            user = await _userManager.FindByNameAsync(phone);
+            await _userManager.AddToRoleAsync(user, RoleConstants.User);
 
             return result;
         }
 
         public async Task<Account?> GetAccountById(string id)
         {
-            var account = await _applicationContext.Accounts
-                .Include(item => item.Addresses)
-                .FirstOrDefaultAsync(item => item.Id == id);
+            var account = await _userManager.FindByIdAsync(id);
 
             return account;
         }
@@ -86,7 +91,10 @@ namespace bars_group_delivery.WebAPI.Services
         {
             try
             {
-                return await _userManager.UpdateAsync(account);
+                var result = await _userManager.UpdateAsync(account);
+                if(result.Succeeded)
+                    await _applicationContext.SaveChangesAsync();
+                return result; 
             }
             catch (Exception ex)
             {

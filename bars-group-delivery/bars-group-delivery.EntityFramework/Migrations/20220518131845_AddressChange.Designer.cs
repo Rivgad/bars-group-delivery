@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using bars_group_delivery.EntityFramework;
@@ -11,9 +12,10 @@ using bars_group_delivery.EntityFramework;
 namespace bars_group_delivery.EntityFramework.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220518131845_AddressChange")]
+    partial class AddressChange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +23,46 @@ namespace bars_group_delivery.EntityFramework.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("bars_group_delivery.EntityFramework.Models.Address", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AccountId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("City")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("Entrance")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("Flat")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("Floor")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("House")
+                        .HasColumnType("text");
+
+                    b.Property<string>("InterCom")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("Addresses");
+                });
 
             modelBuilder.Entity("bars_group_delivery.EntityFramework.Models.Category", b =>
                 {
@@ -375,6 +417,17 @@ namespace bars_group_delivery.EntityFramework.Migrations
                     b.HasDiscriminator().HasValue("Account");
                 });
 
+            modelBuilder.Entity("bars_group_delivery.EntityFramework.Models.Address", b =>
+                {
+                    b.HasOne("bars_group_delivery.EntityFramework.Models.Account", "Account")
+                        .WithMany("Addresses")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+                });
+
             modelBuilder.Entity("bars_group_delivery.EntityFramework.Models.Ingredient", b =>
                 {
                     b.HasOne("bars_group_delivery.EntityFramework.Models.Product", "Product")
@@ -495,6 +548,8 @@ namespace bars_group_delivery.EntityFramework.Migrations
 
             modelBuilder.Entity("bars_group_delivery.EntityFramework.Models.Account", b =>
                 {
+                    b.Navigation("Addresses");
+
                     b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618

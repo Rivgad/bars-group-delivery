@@ -23,7 +23,7 @@ namespace bars_group_delivery.WebAPI.Controllers
             _authenticationService = authenticationService;
         }
 
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = RoleConstants.User)]
         [HttpGet]
         public async Task<IActionResult> GetUserInfo()
         {
@@ -39,12 +39,11 @@ namespace bars_group_delivery.WebAPI.Controllers
             return Ok(new
             {
                 phone = account.UserName,
-                name = account.Name,
-                addresses = account.Addresses
+                name = account.Name
             });
         }
 
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = RoleConstants.User)]
         [HttpPost]
         public async Task<IActionResult> UpdateUserInfo(ProfileUpdateDTO model)
         {
@@ -53,41 +52,26 @@ namespace bars_group_delivery.WebAPI.Controllers
                 return StatusCode(403);
 
             var account = await _authenticationService.GetAccountById(accountId);
+            if(account == null)
+                return BadRequest();
 
-            account.PhoneNumber = model.Phone ?? account.PhoneNumber;
-            account.Name = model.Name ?? account.Name;
+            account.UserName = string.IsNullOrEmpty(model.Phone) ? account.PhoneNumber : model.Phone.Trim();
+            account.Name = string.IsNullOrEmpty(model.Name) ? account.Name : model.Name.Trim();
+            account.PhoneNumber = string.IsNullOrEmpty(model.Phone) ? account.PhoneNumber : model.Phone.Trim();
 
             try
             {
-                await _authenticationService.UpdateAccount(account);
-                return AcceptedAtAction(nameof(UpdateUserInfo), new { id = account.Id, name = account.Name, phone = account.PhoneNumber });
+                var result = await _authenticationService.UpdateAccount(account);
+                if(result.Succeeded)
+                    return AcceptedAtAction(nameof(UpdateUserInfo), new { id = account.Id, name = account.Name, phone = account.UserName });
+                else 
+                    return BadRequest(result.Errors);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
 
-        }
-
-        [Authorize(Roles = "user")]
-        [HttpPost("[Action]")]
-        public async Task<IActionResult> DeleteAddress(int id)
-        {
-            string? accountId = User.FindFirst("UserId")?.Value;
-            if (accountId == null)
-                return StatusCode(403);
-
-            try
-            {
-
-                _applicationContext.Addresses.Remove(new Address() { Id= id });
-                await _applicationContext.SaveChangesAsync();
-                return Ok(new { id });
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
         }
     }
 }
