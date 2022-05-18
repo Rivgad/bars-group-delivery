@@ -3,6 +3,7 @@ import { Button, Col, FloatingLabel, Form, Row } from "react-bootstrap";
 import NumberFormat from "react-number-format";
 import { useSelector } from "react-redux";
 import { number, object, string } from "yup";
+import { RequestStatus } from "../../helpers";
 import phoneSchema from "../common/phoneShema";
 
 const schema = object({
@@ -17,7 +18,8 @@ const schema = object({
 const CheckoutFrom = ({ onSubmit }) => {
     const { isLoggedIn, user: currentUser } = useSelector(state => state.auth)
     const currentOrder = useSelector((state) => state.orders.currentOrder);
-    const disabled = Object.entries(currentOrder).length !== 0;
+    const ordersEmpty = Object.entries(currentOrder).length !== 0;
+    const isLoading = useSelector(state=> state.orders.status) === RequestStatus.Loading;
 
     return (
         <Formik
@@ -140,7 +142,7 @@ const CheckoutFrom = ({ onSubmit }) => {
                             as='textarea'
                             placeholder="Напишите, как вас найти или пожелания для блюд..." />
                     </Form.Group>
-                    <Button disabled={disabled} type='submit' className='w-100' size='lg'>Заказать</Button>
+                    <Button disabled={ordersEmpty || isLoading} type='submit' className='w-100' size='lg'>Заказать</Button>
                 </Form>
             )}
         </Formik>

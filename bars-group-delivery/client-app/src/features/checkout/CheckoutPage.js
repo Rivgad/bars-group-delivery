@@ -30,31 +30,24 @@ const CheckoutPage = () => {
             return;
         }
         const { address, entrance, flat, floor, intercom, comment } = values;
-        try {
-            console.log(flat)
-            const requestData = {
-                address: [
-                    address,
-                    flat === "" ? null : `кв. ${flat}`,
-                    floor === "" ? null : `Этаж ${floor}`,
-                    entrance === "" ? null : `Подъезд ${entrance}`,
-                    intercom === "" ? null : `Домофон ${intercom}`
-                ].filter(x => typeof x === 'string' && x.length > 0).join(', '),
-                products: basketProducts.map(item => {
-                    return {
-                        id: item.id,
-                        quantity: item.count
-                    }
-                }),
-                comment
-            };
 
-            dispatch(createOrderRequest(requestData));
-        }
-        catch (error) {
-            console.log(error);
-        }
-
+        const requestData = {
+            address: [
+                address,
+                flat === "" ? null : `кв. ${flat}`,
+                floor === "" ? null : `Этаж ${floor}`,
+                entrance === "" ? null : `Подъезд ${entrance}`,
+                intercom === "" ? null : `Домофон ${intercom}`
+            ].filter(x => typeof x === 'string' && x.length > 0).join(', '),
+            products: basketProducts.map(item => {
+                return {
+                    id: item.id,
+                    quantity: item.count
+                }
+            }),
+            comment
+        };
+        dispatch(createOrderRequest(requestData));
     }
 
     return (
