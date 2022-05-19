@@ -1,10 +1,10 @@
 import { Alert } from "react-bootstrap";
 
-const ErrorIndicator = ({ message, ...other }) => {
+const ErrorIndicator = ({ title, message, ...other }) => {
     return (
         <>
             <Alert variant="danger" {...other}>
-                <Alert.Heading>О нет! Произошла ошибка!</Alert.Heading>
+                <Alert.Heading>{title ?? "О нет! Произошла ошибка!"}</Alert.Heading>
                 <p>
                     {
                         message ?? "Попробуйте снова."
