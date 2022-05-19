@@ -3,6 +3,7 @@ import axios from "axios";
 
 import { RequestStatus } from "../../helpers";
 import authHeader from "../../services/authHeader";
+import { logout } from "../auth/authSlice";
 
 const initialState = {
     currentOrder: {},
@@ -50,6 +51,10 @@ const ordersSlice = createSlice(
         },
         extraReducers: builder => {
             builder
+                .addCase(logout.fulfilled, (state, action) => {
+                    state.currentOrder = {};
+                    state.entities = {};
+                })
                 .addCase(createOrderRequest.pending, (state, action) => {
                     state.status = RequestStatus.Loading;
                 })
@@ -64,12 +69,13 @@ const ordersSlice = createSlice(
                     state.fetchStatus = RequestStatus.Loading;
                 })
                 .addCase(fetchOrders.fulfilled, (state, action) => {
-                    state.fetchStatus = RequestStatus.Succeeded;
+
                     const newEntities = {};
                     action.payload.forEach((order) => {
                         newEntities[order.id] = order;
                     });
                     state.entities = newEntities;
+                    state.fetchStatus = RequestStatus.Succeeded;
                 })
                 .addCase(fetchOrders.rejected, (state, action) => {
                     state.fetchStatus = RequestStatus.Failed;
