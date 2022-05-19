@@ -16,8 +16,4 @@
     <ProjectReference Include="..\bars-group-delivery.EntityFramework\bars-group-delivery.EntityFramework.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="AppBuilders\" />
-  </ItemGroup>
-
 </Project>

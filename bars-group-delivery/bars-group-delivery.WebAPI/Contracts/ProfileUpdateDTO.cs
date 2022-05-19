@@ -11,8 +11,7 @@ namespace bars_group_delivery.WebAPI.Contracts
         public string Phone { get; set; }
 
         [JsonPropertyName("name")]
-        [Required]
         [RegularExpression(@"\b[^\d]+\b")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 }
