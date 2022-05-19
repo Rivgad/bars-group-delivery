@@ -38,7 +38,7 @@ namespace bars_group_delivery.WebAPI.Controllers
                 var result = await _applicationContext.Categories.AddAsync(newCategory);
                 await _applicationContext.SaveChangesAsync();
 
-                return CreatedAtAction(nameof(CreateCategory), new { id=result.Entity.Id, title=result.Entity.Title });
+                return CreatedAtAction(nameof(CreateCategory), new { id = result.Entity.Id, title = result.Entity.Title });
             }
             catch (Exception ex)
             {

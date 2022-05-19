@@ -1,13 +1,9 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-
-import { RequestStatus } from "../../helpers";
 import { createOrderRequest } from "../orders/ordersSlice";
 
 const initialState = {
     entities:{},
     totalPrice:0,
-
-    createOrderStatus: RequestStatus.Idle
 }
 
 const updateCartItem = (product, item = {}, quantity) => {
@@ -57,10 +53,6 @@ const basketSlice = createSlice(
                     }
                 }
             },
-            onBacketCleared(state, action){
-                state.entities = {};
-                state.totalPrice = null;
-            }
         },
         extraReducers:builder=>{
             builder
@@ -72,7 +64,7 @@ const basketSlice = createSlice(
     }
 )
 
-export const { productCountChanged, onBacketCleared } = basketSlice.actions;
+export const { productCountChanged } = basketSlice.actions;
 
 export default basketSlice.reducer;
 

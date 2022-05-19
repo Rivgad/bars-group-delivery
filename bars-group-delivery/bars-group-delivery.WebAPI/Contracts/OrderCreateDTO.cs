@@ -1,5 +1,4 @@
-﻿using bars_group_delivery.EntityFramework.Models;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace bars_group_delivery.WebAPI.Contracts
 {
@@ -15,12 +14,12 @@ namespace bars_group_delivery.WebAPI.Contracts
         }
         [JsonPropertyName("address")]
         public string Address { get; set; }
-        
+
         [JsonPropertyName("comment")]
         public string Comment { get; set; }
 
         [JsonPropertyName("products")]
         public Product[] Products { get; set; }
     }
-    
+
 }

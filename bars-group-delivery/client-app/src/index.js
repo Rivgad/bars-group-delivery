@@ -17,6 +17,7 @@ import OrdersHistoryPage from './features/orders/OrdersHistoryPage';
 import RequireAuth from './features/auth/RequireAuth';
 import CategoriesPage from './features/categories/CategoriesPage';
 import CurrentCategoryPage from './features/products/CurrentCategoryPage';
+import NotFoundPage from './features/common/NotFoundPage';
 
 store.dispatch(fetchCategories())
 
@@ -49,6 +50,7 @@ root.render(
               }
             />
             <Route path='login' element={<LoginPage />} />
+            <Route path='*' element={<NotFoundPage/>} />
           </Route>
         </Routes>
       </BrowserRouter>

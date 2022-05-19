@@ -14,15 +14,15 @@ namespace bars_group_delivery.WebAPI.Contracts
 
         [JsonPropertyName("accessToken")]
         public string AccessToken { get; set; }
-        
+
         [JsonPropertyName("phone")]
         public string Phone { get; set; }
-        
+
         [JsonPropertyName("name")]
         public string? Name { get; set; }
-        
+
         [JsonPropertyName("roles")]
         public string[] Roles { get; set; }
-        
+
     }
 }

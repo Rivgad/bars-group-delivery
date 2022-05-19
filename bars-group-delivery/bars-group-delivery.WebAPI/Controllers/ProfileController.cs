@@ -52,7 +52,7 @@ namespace bars_group_delivery.WebAPI.Controllers
                 return StatusCode(403);
 
             var account = await _authenticationService.GetAccountById(accountId);
-            if(account == null)
+            if (account == null)
                 return BadRequest();
 
             account.UserName = string.IsNullOrEmpty(model.Phone) ? account.PhoneNumber : model.Phone.Trim();
@@ -62,9 +62,9 @@ namespace bars_group_delivery.WebAPI.Controllers
             try
             {
                 var result = await _authenticationService.UpdateAccount(account);
-                if(result.Succeeded)
+                if (result.Succeeded)
                     return AcceptedAtAction(nameof(UpdateUserInfo), new { id = account.Id, name = account.Name, phone = account.UserName });
-                else 
+                else
                     return BadRequest(result.Errors);
             }
             catch (Exception ex)

@@ -34,5 +34,5 @@ namespace bars_group_delivery.WebAPI.Contracts
         [JsonPropertyName("categoryId")]
         public int CategoryId { get; set; }
     }
-    
+
 }

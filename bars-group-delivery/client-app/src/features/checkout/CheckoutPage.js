@@ -24,7 +24,7 @@ const CheckoutPage = () => {
     if (basketIsEmpty && currentOrderIsEmpty) {
         return <Navigate to='/' />
     }
-    const handleSubmit = async (values) => {
+    const handleSubmit = (values) => {
         if (!currentUser) {
             navigate('/login', { state:{ from:location }, replace: true });
             return;

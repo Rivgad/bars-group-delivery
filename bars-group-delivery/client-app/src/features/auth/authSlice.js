@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { RequestStatus } from "../../helpers";
 import AuthService from "../../services/authService";
 const user = JSON.parse(localStorage.getItem("user"));
 
@@ -18,8 +19,8 @@ export const logout = createAsyncThunk("auth/logout", async () => {
 });
 
 const initialState = user
-    ? { isLoggedIn: true, user }
-    : { isLoggedIn: false, user: null };
+    ? { isLoggedIn: true, user, status:RequestStatus.Idle }
+    : { isLoggedIn: false, user: null, status:RequestStatus.Idle };
 
 const authSlice = createSlice({
     name: "auth",
@@ -28,10 +29,15 @@ const authSlice = createSlice({
         [auth.fulfilled]: (state, action) => {
             state.isLoggedIn = true;
             state.user = action.payload.user;
+            state.status = RequestStatus.Succeeded
         },
         [auth.rejected]: (state, action) => {
             state.isLoggedIn = false;
             state.user = null;
+            state.status = RequestStatus.Failed
+        },
+        [auth.pending]: (state, action) => {
+            state.status = RequestStatus.Loading
         },
         [logout.fulfilled]: (state, action) => {
             state.isLoggedIn = false;
