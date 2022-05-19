@@ -3,6 +3,11 @@ import { Formik } from 'formik';
 import NumberFormat from 'react-number-format';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import phoneSchema from '../common/phoneShema';
+import { updateUserInfo } from './profileSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { RequestStatus } from '../../helpers';
+import PageLoadingIndicator from '../common/PageLoadingIndicator';
+import ErrorIndicator from '../common/ErrorIndicator';
 
 
 const nameRegExp = /([\D{L}]{3,}$)/g;
@@ -13,7 +18,27 @@ const schema = object({
     phone: phoneSchema
 });
 
-const ProfileForm = ({name, phone, onSubmit, isLoading}) => {
+const ProfileForm = () => {
+    const dispatch = useDispatch();
+
+    const onSubmit =(values)=>{
+        dispatch(updateUserInfo(values))
+    }
+    let phone = useSelector(state => state.profile.phone);
+    let name = useSelector(state => state.profile.name);
+
+    const status = useSelector(state=> state.profile.status);
+    const isLoading = status === RequestStatus.Loading;
+    const isError = status === RequestStatus.Failed;
+    const errorCode = useSelector(state=> state.profile.errorCode);
+
+    if(isLoading === true){
+        return <PageLoadingIndicator/>
+    }
+    if(isError === true && !errorCode){
+        return <ErrorIndicator/>
+    }
+    
     return (
         <Formik
             validationSchema={schema}
@@ -54,15 +79,22 @@ const ProfileForm = ({name, phone, onSubmit, isLoading}) => {
                                 format="+# (###) ###-##-##"
                                 mask="_"
                                 onValueChange={(values) => setFieldValue('phone', values.value)}
-                                isInvalid={!!errors.phone}
+                                isInvalid={!!errors.phone || errorCode}
                                 value={values.phone}
                                 type="text"
                                 name="phone"
                                 customInput={Form.Control}
                             />
-                            <Form.Control.Feedback type="invalid">
-                                {errors.phone}
-                            </Form.Control.Feedback>
+                            {
+                                errorCode === "DuplicateUserName" ?
+                                    <Form.Control.Feedback type="invalid">
+                                        Телефонный номер уже занят
+                                    </Form.Control.Feedback>
+                                    :
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.phone}
+                                    </Form.Control.Feedback>
+                            }
                         </Form.Group>
                     </Row>
 
