@@ -20,6 +20,7 @@ const LoginForm = () => {
     }
     const status = useSelector(state => state.auth.status);
     const isLoading = status === RequestStatus.Loading;
+    const isError = status ===RequestStatus.Failed;
 
     return (
         <Formik
@@ -64,10 +65,10 @@ const LoginForm = () => {
                                 name="password"
                                 value={values.password}
                                 onChange={handleChange}
-                                isInvalid={!!errors.password}
+                                isInvalid={!!errors.password || isError}
                             />
                             <Form.Control.Feedback type="invalid">
-                                {errors.password}
+                                {errors.password ?? "Неверный пароль"}
                             </Form.Control.Feedback>
                         </Form.Group>
                     </Row>
