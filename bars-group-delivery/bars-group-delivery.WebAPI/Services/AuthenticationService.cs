@@ -1,10 +1,8 @@
 ﻿using bars_group_delivery.EntityFramework;
-using bars_group_delivery.EntityFramework.Extensions;
 using bars_group_delivery.EntityFramework.Models;
 using bars_group_delivery.WebAPI.Contracts;
 using bars_group_delivery.WebAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -21,8 +19,8 @@ namespace bars_group_delivery.WebAPI.Services
         private readonly string _securityKey;
 
         public AuthenticationService(
-            UserManager<Account> userManager, 
-            ApplicationContext applicationContext, 
+            UserManager<Account> userManager,
+            ApplicationContext applicationContext,
             IConfiguration configuration)
         {
             _userManager = userManager;
@@ -35,7 +33,7 @@ namespace bars_group_delivery.WebAPI.Services
         public async Task<AuthenticationResultDTO?> Login(string userName, string password)
         {
             var identityUsr = await _userManager.FindByNameAsync(userName);
-            
+
             if (await _userManager.CheckPasswordAsync(identityUsr, password))
             {
                 var userRoles = await _userManager.GetRolesAsync(identityUsr);
@@ -47,7 +45,7 @@ namespace bars_group_delivery.WebAPI.Services
                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_securityKey));
                 var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
                 var token = new JwtSecurityToken(
-                    claims: claims, 
+                    claims: claims,
                     issuer: _issuer,
                     audience: _audience,
                     signingCredentials: credentials);
@@ -92,9 +90,9 @@ namespace bars_group_delivery.WebAPI.Services
             try
             {
                 var result = await _userManager.UpdateAsync(account);
-                if(result.Succeeded)
+                if (result.Succeeded)
                     await _applicationContext.SaveChangesAsync();
-                return result; 
+                return result;
             }
             catch (Exception ex)
             {

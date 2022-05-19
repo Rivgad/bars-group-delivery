@@ -1,7 +1,6 @@
 ﻿using bars_group_delivery.EntityFramework;
 using bars_group_delivery.EntityFramework.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace bars_group_delivery.WebAPI.Extensions
 {
@@ -11,7 +10,7 @@ namespace bars_group_delivery.WebAPI.Extensions
         public static async Task<IApplicationBuilder> PrepareDatabase(this WebApplication app)
         {
             app.Logger.LogInformation("App created...");
-            
+
             app.Logger.LogInformation("Seeding Database...");
 
             using (var scope = app.Services.CreateScope())

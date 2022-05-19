@@ -63,7 +63,7 @@ namespace bars_group_delivery.EntityFramework
                 new Category(){ Id=1, Title="Бургеры" },
                 new Category(){ Id=2, Title="Пицца" },
                 new Category(){ Id=2, Title="Роллы" },
-                new Category(){ Id=2, Title="Коктейли", }        
+                new Category(){ Id=2, Title="Коктейли", }
             };
         }
 

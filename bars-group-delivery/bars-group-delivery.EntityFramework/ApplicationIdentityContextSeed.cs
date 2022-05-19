@@ -1,12 +1,7 @@
-﻿using bars_group_delivery.EntityFramework.Models;
+﻿using bars_group_delivery.EntityFramework.Extensions;
+using bars_group_delivery.EntityFramework.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using bars_group_delivery.EntityFramework.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace bars_group_delivery.EntityFramework
 {
@@ -15,7 +10,7 @@ namespace bars_group_delivery.EntityFramework
     {
         public static async Task SeedAsync(ApplicationContext dbContext, UserManager<Account> userManager, RoleManager<IdentityRole> roleManager)
         {
-            if(dbContext.Database.IsNpgsql())
+            if (dbContext.Database.IsNpgsql())
             {
                 dbContext.Database.Migrate();
             }

@@ -18,7 +18,7 @@ namespace bars_group_delivery.EntityFramework.Models
         [JsonIgnore]
         public Product? Product { get; set; }
 
-        [Range(1,int.MaxValue)]
+        [Range(1, int.MaxValue)]
         [JsonPropertyName("quantity")]
         public int Quantity { get; set; }
     }

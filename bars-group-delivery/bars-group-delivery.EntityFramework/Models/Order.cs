@@ -7,10 +7,10 @@ namespace bars_group_delivery.EntityFramework.Models
     {
         [JsonIgnore]
         public Account? Account { get; set; }
-        
+
         [JsonPropertyName("accountId")]
         public string AccountId { get; set; }
-        
+
         [JsonPropertyName("address")]
         public string Address { get; set; }
 
@@ -19,7 +19,7 @@ namespace bars_group_delivery.EntityFramework.Models
 
         [JsonPropertyName("createTime")]
         public DateTime CreateDateTime { get; set; }
-        
+
         [JsonPropertyName("resolveTime")]
         public DateTime? ResolveDateTime { get; set; }
 

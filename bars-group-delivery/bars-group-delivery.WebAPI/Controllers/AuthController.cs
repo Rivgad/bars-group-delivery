@@ -36,7 +36,7 @@ namespace bars_group_delivery.WebAPI.Controllers
             }
             else if (registrationResult.Errors.Any(item => item.Code == "DuplicateUserName"))
             {
-                return StatusCode(403, new { error= "Login Failed, The user name or password provided is incorrect" });
+                return StatusCode(403, new { error = "Login Failed, The user name or password provided is incorrect" });
             }
             else
             {

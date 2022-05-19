@@ -1,5 +1,4 @@
 ﻿using bars_group_delivery.EntityFramework;
-using bars_group_delivery.EntityFramework.Extensions;
 using bars_group_delivery.EntityFramework.Models;
 using bars_group_delivery.WebAPI.Contracts;
 using Microsoft.AspNetCore.Authorization;
