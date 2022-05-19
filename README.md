@@ -39,7 +39,7 @@
 
 1. Указать в **appsettings.json** проекта **bars-group-delivery.WebAPI** 
     1. строку подключения базы данных в "DefaultConnection"
-    2. настройки для JWT-токена
+    2. настройки для JWT-токена (минимальная длина секрета 16 символов)
 2. Указать строку подключения в **DesignTimeIdentityDbContextFactory.cs** проекта **bars-group-delivery.WebAPI**
 3. Выполнить команду Update-database
 4. Указать в **appsettings.json** проекта **bars-group-delivery.WebAPI** url-сервера в **applicationUrl**
