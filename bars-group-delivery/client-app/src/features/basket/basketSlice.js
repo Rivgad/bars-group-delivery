@@ -1,13 +1,9 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-
-import { RequestStatus } from "../../helpers";
 import { createOrderRequest } from "../orders/ordersSlice";
 
 const initialState = {
     entities:{},
     totalPrice:0,
-
-    createOrderStatus: RequestStatus.Idle
 }
 
 const updateCartItem = (product, item = {}, quantity) => {
