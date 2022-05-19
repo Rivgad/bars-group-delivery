@@ -4,6 +4,7 @@ import axios from "axios";
 import { RequestStatus } from "../../helpers";
 import authHeader from "../../services/authHeader";
 import { logout } from "../auth/authSlice";
+import { productCountChanged } from "../basket/basketSlice";
 
 const initialState = {
     currentOrder: {},
@@ -51,6 +52,9 @@ const ordersSlice = createSlice(
         },
         extraReducers: builder => {
             builder
+                .addCase(productCountChanged, (state,action)=>{
+                    state.status = RequestStatus.Idle;
+                })
                 .addCase(logout.fulfilled, (state, action) => {
                     state.currentOrder = {};
                     state.entities = {};

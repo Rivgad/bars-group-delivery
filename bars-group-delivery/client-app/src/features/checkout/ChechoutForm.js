@@ -1,9 +1,10 @@
 import { Formik } from "formik";
-import { Button, Col, FloatingLabel, Form, Row } from "react-bootstrap";
+import { Alert, Button, Col, FloatingLabel, Form, InputGroup, Row, Spinner } from "react-bootstrap";
 import NumberFormat from "react-number-format";
 import { useSelector } from "react-redux";
 import { number, object, string } from "yup";
 import { RequestStatus } from "../../helpers";
+import ErrorIndicator from "../common/ErrorIndicator";
 import phoneSchema from "../common/phoneShema";
 
 const schema = object({
@@ -19,8 +20,8 @@ const CheckoutFrom = ({ onSubmit }) => {
     const { isLoggedIn, user: currentUser } = useSelector(state => state.auth)
     const currentOrder = useSelector((state) => state.orders.currentOrder);
     const ordersEmpty = Object.entries(currentOrder).length !== 0;
-    const isLoading = useSelector(state=> state.orders.status) === RequestStatus.Loading;
-
+    const isLoading = useSelector(state => state.orders.status) === RequestStatus.Loading;
+    const isError = useSelector(state => state.orders.status) === RequestStatus.Failed;
     return (
         <Formik
             validationSchema={schema}
@@ -142,7 +143,20 @@ const CheckoutFrom = ({ onSubmit }) => {
                             as='textarea'
                             placeholder="Напишите, как вас найти или пожелания для блюд..." />
                     </Form.Group>
-                    <Button disabled={ordersEmpty || isLoading} type='submit' className='w-100' size='lg'>Заказать</Button>
+                    {
+                        isError === true ? <ErrorIndicator /> : <></>
+                    }
+                    <Button disabled={ordersEmpty || isLoading} type='submit' className='w-100' size='lg'>
+                        {
+                            isLoading === true ?
+                                <>
+                                    <Spinner animation=' borded' />
+                                    Загрузка...
+                                </>
+                                :
+                                <>Заказать</>
+                        }
+                    </Button>
                 </Form>
             )}
         </Formik>
