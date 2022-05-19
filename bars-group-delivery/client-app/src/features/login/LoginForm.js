@@ -1,7 +1,10 @@
 import { Formik } from "formik";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
 import NumberFormat from "react-number-format";
+import { useDispatch, useSelector } from "react-redux";
 import { object, string } from "yup";
+import { RequestStatus } from "../../helpers";
+import { auth } from "../auth/authSlice";
 import phoneSchema from "../common/phoneShema";
 
 const schema = object({
@@ -9,11 +12,19 @@ const schema = object({
     password: string()
         .required('Введите пароль')
 })
-const LoginForm = ({ onSubmit }) => {
+const LoginForm = () => {
+    const dispatch = useDispatch();
+
+    const handleSubmit = ({ phone, password }) => {
+        dispatch(auth({ phone, password }))
+    }
+    const status = useSelector(state => state.auth.status);
+    const isLoading = status === RequestStatus.Loading;
+
     return (
         <Formik
             validationSchema={schema}
-            onSubmit={onSubmit}
+            onSubmit={handleSubmit}
             initialValues={{
                 phone: '',
                 password: ''
@@ -61,7 +72,20 @@ const LoginForm = ({ onSubmit }) => {
                         </Form.Group>
                     </Row>
 
-                    <Button type="submit" className=' w-100' size='lg'>Войти</Button>
+                    <Button type="submit" className=' w-100' size='lg' disabled={isLoading}>
+                        {
+                            isLoading ?
+                                <><Spinner
+                                animation="border"
+                                    as="span"
+                                    role="status"
+                                    size='sm'
+                                    aria-hidden="true"
+                                /></>
+                                :
+                                <>Войти</>
+                        }
+                    </Button>
                 </Form>
             )}
 
